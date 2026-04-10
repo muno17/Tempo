@@ -3,7 +3,8 @@ from .models import Profile, Shoe, Block, Cycle, Activity, Segment
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "preferred_units", "cycle_length", "default_shoe")
+    list_display = ("user", "preferred_units", "default_cycle_length",
+                    "default_cycle_name", "default_shoe")
 
 
 @admin.register(Shoe)

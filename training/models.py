@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -10,7 +11,8 @@ class Profile(models.Model):
     ]
     preferred_units = models.CharField(choices=PREFERRED_UNITS_CHOICES,default='mi', max_length=2)
 
-    cycle_length = models.CharField(default='week', max_length=50)
+    default_cycle_name = models.CharField(default='Week', max_length=50)
+    default_cycle_length = models.PositiveIntegerField(default=7)
     default_shoe = models.ForeignKey('Shoe', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -37,7 +39,7 @@ class Block(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     start = models.DateField()
-    end = models.DateField()
+    end = models.DateField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     goals = models.TextField(null=True, blank=True)
 
@@ -67,9 +69,9 @@ class Activity(models.Model):
     cycle = models.ForeignKey(Cycle, on_delete=models.CASCADE, null=True, blank=True,
                               related_name='activities')
     planned = models.BooleanField(default=False)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default='Daily Run')
     total_time = models.DurationField()
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(default=timezone.now)
     perceived_effort = models.IntegerField(
         default=5,
         validators=[MinValueValidator(1),
