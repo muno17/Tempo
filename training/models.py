@@ -16,6 +16,7 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username}\'s Profile'
 
+
 class Shoe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     brand = models.CharField(max_length=100)
@@ -30,12 +31,13 @@ class Shoe(models.Model):
     def __str__(self):
         return f'{self.brand} {self.model_name} {self.nickname}'
 
+
 class Block(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    start = models.DateField()
-    end = models.DateField()
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
+    start = models.DateField()
+    end = models.DateField()
     notes = models.TextField(null=True, blank=True)
     goals = models.TextField(null=True, blank=True)
 
@@ -44,6 +46,7 @@ class Block(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
 
 class Cycle(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -57,6 +60,7 @@ class Cycle(models.Model):
 
     def __str__(self):
         return f'{self.start} {self.end}'
+
 
 class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
