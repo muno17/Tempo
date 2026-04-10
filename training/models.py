@@ -70,7 +70,6 @@ class Activity(models.Model):
                               related_name='activities')
     planned = models.BooleanField(default=False)
     title = models.CharField(max_length=100, default='Daily Run')
-    total_time = models.DurationField()
     timestamp = models.DateTimeField(default=timezone.now)
     perceived_effort = models.IntegerField(
         default=5,

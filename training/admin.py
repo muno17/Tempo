@@ -29,6 +29,7 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ("title", "user", "timestamp", "total_time", "perceived_effort")
     list_filter = ("user", "timestamp", "total_time")
 
+
 @admin.register(Segment)
 class SegmentAdmin(admin.ModelAdmin):
     list_display = ("distance", "duration", "type", "user")
