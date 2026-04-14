@@ -28,11 +28,18 @@ class Shoe(models.Model):
     is_retired = models.BooleanField(default=False)
     init_mileage = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
 
-    # property for total mileage
-
     def __str__(self):
         return f'{self.brand} {self.model_name} {self.nickname}'
 
+    @property
+    def shoe_mileage(self):
+        """Returns the total mileage of the shoe"""
+        activity_miles = Segment.objects.filter(
+            # Q lets us run an 'or' operation on a query
+            models.Q(shoe=self) | models.Q(shoe__isnull=True, activity__default_shoe=self)
+        ).aggregate(total=models.Sum('distance'))['total'] or 0
+
+        return float(self.init_mileage) + float(activity_miles)
 
 class Block(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,10 +51,18 @@ class Block(models.Model):
     goals = models.TextField(null=True, blank=True)
 
     # property for total duration
-    # property for total distance
 
     def __str__(self):
         return f'{self.name}'
+
+    @property
+    def block_mileage(self):
+        """Returns the total mileage of the block"""
+        block_miles = self.cycles.aggregate(
+            total=models.Sum('activities__segments__distance')
+        )['total'] or 0
+
+        return float(block_miles)
 
 
 class Cycle(models.Model):
@@ -58,10 +73,17 @@ class Cycle(models.Model):
     end = models.DateField()
 
     # property for total duration
-    # property for total distance
 
     def __str__(self):
         return f'{self.start} {self.end}'
+
+    def cycle_mileage(self):
+        """Returns the total mileage of the cycle"""
+        cycle_miles = self.activities.aggregate(
+            total=models.Sum('segments__distance')
+        )['total'] or 0
+
+        return float(cycle_miles)
 
 
 class Activity(models.Model):
@@ -76,21 +98,29 @@ class Activity(models.Model):
         validators=[MinValueValidator(1),
                     MaxValueValidator(10)],
     )
-    shoe = models.ForeignKey(Shoe, on_delete=models.SET_NULL, null=True, blank=True,
+    default_shoe = models.ForeignKey(Shoe, on_delete=models.SET_NULL, null=True, blank=True,
                              related_name='activities')
     notes = models.TextField(null=True, blank=True)
 
-    # property for total duration
-    # property for total distance
-
     def __str__(self):
-        return f'{self.title} {self.total_time} {self.timestamp}'
+        return f'{self.title} {self.timestamp}'
+
+    # property for total duration
+    @property
+    def activity_mileage(self):
+        """Returns the total mileage of the activity"""
+        activity_miles = self.segments.aggregate(
+            total=models.Sum('distance')
+        )['total'] or 0
+
+        return float(activity_miles)
 
 
 class Segment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True,
                                  related_name='segments')
+    shoe = models.ForeignKey(Shoe, on_delete=models.SET_NULL, null=True, blank=True,)
     distance = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     duration = models.DurationField()
     RUN_TYPES = [
@@ -111,3 +141,9 @@ class Segment(models.Model):
 
     def __str__(self):
         return f'{self.distance} {self.duration} {self.type}'
+
+
+    @property
+    def effective_shoe(self):
+        """Returns the segment's shoe or the activity's default"""
+        return self.shoe or self.activity.default_shoe

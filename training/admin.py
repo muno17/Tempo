@@ -26,8 +26,8 @@ class CycleAdmin(admin.ModelAdmin):
 
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ("title", "user", "timestamp", "total_time", "perceived_effort")
-    list_filter = ("user", "timestamp", "total_time")
+    list_display = ("title", "user", "timestamp", "perceived_effort")
+    list_filter = ("user", "timestamp")
 
 
 @admin.register(Segment)
