@@ -146,4 +146,5 @@ class Segment(models.Model):
     @property
     def effective_shoe(self):
         """Returns the segment's shoe or the activity's default"""
+        # using this to be able to set a default in the ui
         return self.shoe or self.activity.default_shoe
