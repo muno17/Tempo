@@ -1,3 +1,6 @@
+from functools import cached_property
+from datetime import timedelta
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
@@ -41,6 +44,7 @@ class Shoe(models.Model):
 
         return float(self.init_mileage) + float(activity_miles)
 
+
 class Block(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -55,7 +59,7 @@ class Block(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    @property
+    @cached_property
     def block_mileage(self):
         """Returns the total mileage of the block"""
         block_miles = self.cycles.aggregate(
@@ -63,6 +67,26 @@ class Block(models.Model):
         )['total'] or 0
 
         return float(block_miles)
+
+    @cached_property
+    def block_time(self):
+        """Returns the total time spent running for the block"""
+        block_time = self.cycles.aggregate(
+            total=models.Sum('activities__segments__duration')
+        )['total'] or 0
+
+        if not block_time:
+            return timedelta(0)
+
+        return block_time
+
+    @property
+    def block_time_display(self):
+        """Returns the total time spent running for the block in a user friendly format"""
+        time = self.block_time
+        return str(time).split('.')[0]
+
+    block_time_display.fget.short_description = 'Total Time'
 
 
 class Cycle(models.Model):
@@ -77,6 +101,7 @@ class Cycle(models.Model):
     def __str__(self):
         return f'{self.start} {self.end}'
 
+    @cached_property
     def cycle_mileage(self):
         """Returns the total mileage of the cycle"""
         cycle_miles = self.activities.aggregate(
@@ -84,6 +109,26 @@ class Cycle(models.Model):
         )['total'] or 0
 
         return float(cycle_miles)
+
+    @cached_property
+    def cycle_time(self):
+        """Returns the total time spent running for the cycle"""
+        cycle_time = self.activities.aggregate(
+            total=models.Sum('segments__duration')
+        )['total'] or 0
+
+        if not cycle_time:
+            return timedelta(0)
+
+        return cycle_time
+
+    @property
+    def cycle_time_display(self):
+        """Returns the total time spent running for the cycle in a user friendly format"""
+        time = self.cycle_time
+        return str(time).split('.')[0]
+
+    cycle_time_display.fget.short_description = 'Total Time'
 
 
 class Activity(models.Model):
@@ -106,7 +151,7 @@ class Activity(models.Model):
         return f'{self.title} {self.timestamp}'
 
     # property for total duration
-    @property
+    @cached_property
     def activity_mileage(self):
         """Returns the total mileage of the activity"""
         activity_miles = self.segments.aggregate(
@@ -114,6 +159,26 @@ class Activity(models.Model):
         )['total'] or 0
 
         return float(activity_miles)
+
+    @cached_property
+    def activity_time(self):
+        """Returns the total time spent running for the activity"""
+        activity_time = self.segments.aggregate(
+            total=models.Sum('duration')
+        )['total'] or 0
+
+        if not activity_time:
+            return timedelta(0)
+
+        return activity_time
+
+    @property
+    def activity_time_display(self):
+        """Returns the total time spent running for the activity in a user friendly format"""
+        time = self.activity_time
+        return str(time).split('.')[0]
+
+    activity_time_display.fget.short_description = 'Time'
 
 
 class Segment(models.Model):
