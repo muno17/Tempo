@@ -35,7 +35,7 @@ class Shoe(models.Model):
         return f'{self.brand} {self.model_name} {self.nickname}'
 
     @property
-    def shoe_mileage(self):
+    def mileage(self):
         """Returns the total mileage of the shoe"""
         activity_miles = Segment.objects.filter(
             # Q lets us run an 'or' operation on a query
@@ -54,13 +54,11 @@ class Block(models.Model):
     notes = models.TextField(null=True, blank=True)
     goals = models.TextField(null=True, blank=True)
 
-    # property for total duration
-
     def __str__(self):
         return f'{self.name}'
 
     @cached_property
-    def block_mileage(self):
+    def mileage(self):
         """Returns the total mileage of the block"""
         block_miles = self.cycles.aggregate(
             total=models.Sum('activities__segments__distance')
@@ -69,7 +67,7 @@ class Block(models.Model):
         return float(block_miles)
 
     @cached_property
-    def block_time(self):
+    def time(self):
         """Returns the total time spent running for the block"""
         block_time = self.cycles.aggregate(
             total=models.Sum('activities__segments__duration')
@@ -81,12 +79,30 @@ class Block(models.Model):
         return block_time
 
     @property
-    def block_time_display(self):
+    def time_display(self):
         """Returns the total time spent running for the block in a user friendly format"""
-        time = self.block_time
+        time = self.time
         return str(time).split('.')[0]
 
-    block_time_display.fget.short_description = 'Total Time'
+    time_display.fget.short_description = 'Total Time'
+
+    @property
+    def pace(self):
+        """Returns the average pace of the block"""
+        miles = float(self.mileage)
+        duration = self.time
+
+        if miles <= 0 or not duration:
+            return "0:00"
+
+        total_seconds = duration.total_seconds()
+        seconds_per_mile = total_seconds / miles
+
+        minutes = int(seconds_per_mile // 60)
+        seconds = int(seconds_per_mile % 60)
+        return f'{minutes}:{seconds:02d}'
+
+    pace.fget.short_description = "Pace (/mi)"
 
 
 class Cycle(models.Model):
@@ -96,13 +112,11 @@ class Cycle(models.Model):
     start = models.DateField()
     end = models.DateField()
 
-    # property for total duration
-
     def __str__(self):
         return f'{self.start} {self.end}'
 
     @cached_property
-    def cycle_mileage(self):
+    def mileage(self):
         """Returns the total mileage of the cycle"""
         cycle_miles = self.activities.aggregate(
             total=models.Sum('segments__distance')
@@ -111,7 +125,7 @@ class Cycle(models.Model):
         return float(cycle_miles)
 
     @cached_property
-    def cycle_time(self):
+    def time(self):
         """Returns the total time spent running for the cycle"""
         cycle_time = self.activities.aggregate(
             total=models.Sum('segments__duration')
@@ -123,12 +137,31 @@ class Cycle(models.Model):
         return cycle_time
 
     @property
-    def cycle_time_display(self):
+    def time_display(self):
         """Returns the total time spent running for the cycle in a user friendly format"""
-        time = self.cycle_time
+        time = self.time
         return str(time).split('.')[0]
 
-    cycle_time_display.fget.short_description = 'Total Time'
+    time_display.fget.short_description = 'Total Time'
+
+    @property
+    def pace(self):
+        """Returns the average pace of the cycle"""
+        miles = float(self.mileage)
+        duration = self.time
+
+        if miles <= 0 or not duration:
+            return "0:00"
+
+        total_seconds = duration.total_seconds()
+        seconds_per_mile = total_seconds / miles
+
+        minutes = int(seconds_per_mile // 60)
+        seconds = int(seconds_per_mile % 60)
+
+        return f'{minutes}:{seconds:02d}'
+
+    pace.fget.short_description = "Pace (/mi)"
 
 
 class Activity(models.Model):
@@ -150,9 +183,8 @@ class Activity(models.Model):
     def __str__(self):
         return f'{self.title} {self.timestamp}'
 
-    # property for total duration
     @cached_property
-    def activity_mileage(self):
+    def mileage(self):
         """Returns the total mileage of the activity"""
         activity_miles = self.segments.aggregate(
             total=models.Sum('distance')
@@ -161,7 +193,7 @@ class Activity(models.Model):
         return float(activity_miles)
 
     @cached_property
-    def activity_time(self):
+    def time(self):
         """Returns the total time spent running for the activity"""
         activity_time = self.segments.aggregate(
             total=models.Sum('duration')
@@ -173,12 +205,33 @@ class Activity(models.Model):
         return activity_time
 
     @property
-    def activity_time_display(self):
+    def time_display(self):
         """Returns the total time spent running for the activity in a user friendly format"""
-        time = self.activity_time
+        time = self.time
         return str(time).split('.')[0]
 
-    activity_time_display.fget.short_description = 'Time'
+    time_display.fget.short_description = 'Time'
+
+
+    @property
+    def pace(self):
+        """Returns the average pace of the activity"""
+        miles = float(self.mileage)
+        duration = self.time
+
+        if miles <= 0 or not duration:
+            return "0:00"
+
+        total_seconds = duration.total_seconds()
+        seconds_per_mile = total_seconds / miles
+
+        minutes = int(seconds_per_mile // 60)
+        seconds = int(seconds_per_mile % 60)
+
+        return f'{minutes}:{seconds:02d}'
+
+
+    pace.fget.short_description = "Pace (/mi)"
 
 
 class Segment(models.Model):
@@ -209,7 +262,7 @@ class Segment(models.Model):
 
 
     @property
-    def effective_shoe(self):
+    def shoe_used(self):
         """Returns the segment's shoe or the activity's default"""
         # using this to be able to set a default in the ui
         return self.shoe or self.activity.default_shoe

@@ -9,26 +9,26 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Shoe)
 class ShoeAdmin(admin.ModelAdmin):
-    list_display = ("brand", "model_name", "nickname", "shoe_mileage", "user",
+    list_display = ("brand", "model_name", "nickname", "mileage", "user",
                     "date_added", "is_retired")
     list_filter = ("user", "brand", "model_name")
 
 @admin.register(Block)
 class BlockAdmin(admin.ModelAdmin):
-    list_display = ("name", "user", "block_mileage", "block_time_display", "start", "end")
+    list_display = ("name", "user", "mileage", "time_display", "pace", "start", "end")
     list_filter = ("user", "name")
 
 
 @admin.register(Cycle)
 class CycleAdmin(admin.ModelAdmin):
-    list_display = ("start", "end", "cycle_mileage", "cycle_time_display", "user")
+    list_display = ("start", "end", "mileage", "time_display", "pace", "user")
     list_filter = ("user", "start", "end")
 
 
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ("title", "user", "timestamp", "activity_mileage",
-                    "activity_time_display", "perceived_effort")
+    list_display = ("title", "user", "timestamp", "mileage", "time_display",
+                    "pace", "perceived_effort")
     list_filter = ("user", "timestamp")
 
 
