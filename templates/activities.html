@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Activities</h1>
 
 <table>
@@ -13,12 +16,13 @@
     <tbody>
         {% for activity in activities %}
         <tr>
-            <td>{% activity.timestamp %}</td>
-            <td>{% activity.title  %}</td>
-            <td>{% activity.mileage %}</td>
-            <td>{% activity.time %}</td>
-            <td>{% activity.pace %}</td>
+            <td>{{ activity.timestamp }}</td>
+            <td>{{ activity.title  }}</td>
+            <td>{{ activity.mileage }}</td>
+            <td>{{ activity.time }}</td>
+            <td>{{ activity.pace }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endblock %}
