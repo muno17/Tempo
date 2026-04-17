@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Blocks</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Mileage</th>
+            <th>Total Time</th>
+            <th>Average Pace</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for block in blocks %}
+        <td>{{ block.name }}</td>
+        <td>{{ block.start|date:"m/d/Y"  }}</td>
+        <td>{{ block.end|date:"m/d/Y"  }}</td>
+        <td>{{ block.mileage }} mi</td>
+        <td>{{ block.time }}</td>
+        <td>{{ block.pace }}/mi</td>
+        </td>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
