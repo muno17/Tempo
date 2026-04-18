@@ -25,6 +25,11 @@ class CycleListView(ListView):
     ordering = ['-start']
 
 
+class CycleDetailView(DetailView):
+    model = Cycle
+    template_name = 'cycle_details.html'
+    context_object_name = 'cycle'
+
 class ActivityListView(ListView):
     model = Activity
     template_name = 'activities.html'

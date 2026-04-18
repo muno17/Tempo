@@ -30,6 +30,7 @@
     <br>
     <br>
 
+<h2>Cycles</h2>
 <table>
     <thead>
         <tr>
@@ -43,7 +44,7 @@
     <tbody>
         {% for cycle in current_block.cycles.all %}
         <tr>
-            <td>{{ cycle.start|date:"m/d/Y"  }}</td>
+            <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
             <td>{{ cycle.end|date:"m/d/Y"  }}</td>
             <td>{{ cycle.mileage }} mi</td>
             <td>{{ cycle.time }}</td>

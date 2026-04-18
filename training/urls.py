@@ -7,4 +7,5 @@ urlpatterns = [
     path('blocks/', BlockListView.as_view(), name='block-list'),
     path('blocks/<int:pk>/', BlockDetailView.as_view(), name='block-detail'),
     path('cycles/', CycleListView.as_view(), name='cycle-list'),
+    path('cycles/<int:pk>/', CycleDetailView.as_view(), name='cycle-detail'),
 ]
