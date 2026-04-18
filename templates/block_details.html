@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Block Details</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Mileage</th>
+            <th>Total Time</th>
+            <th>Average Pace</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ current_block.name }}</td>
+            <td>{{ current_block.start|date:"m/d/Y"  }}</td>
+            <td>{{ current_block.end|date:"m/d/Y"  }}</td>
+            <td>{{ current_block.mileage }} mi</td>
+            <td>{{ current_block.time }}</td>
+            <td>{{ current_block.pace }}/mi</td>
+        </tr>
+    </tbody>
+</table>
+    <br>
+    <br>
+    <br>
+
+<table>
+    <thead>
+        <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Mileage</th>
+            <th>Total Time</th>
+            <th>Average Pace</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cycle in current_block.cycles.all %}
+        <tr>
+            <td>{{ cycle.start|date:"m/d/Y"  }}</td>
+            <td>{{ cycle.end|date:"m/d/Y"  }}</td>
+            <td>{{ cycle.mileage }} mi</td>
+            <td>{{ cycle.time }}</td>
+            <td>{{ cycle.pace }}/mi</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
