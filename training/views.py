@@ -24,7 +24,6 @@ class CycleListView(ListView):
     context_object_name = 'cycles'
     ordering = ['-start']
 
-
 class CycleDetailView(DetailView):
     model = Cycle
     template_name = 'cycle_details.html'
@@ -35,3 +34,8 @@ class ActivityListView(ListView):
     template_name = 'activities.html'
     context_object_name = 'activities'
     ordering = ['-timestamp']
+
+class ActivityDetailView(DetailView):
+    model = Activity
+    template_name = 'activity_details.html'
+    context_object_name = 'activity'
