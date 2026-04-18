@@ -1,10 +1,21 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Tempo</title>
 </head>
 <body>
+<header>
+    <a href="/blocks/">Blocks</a>
+    <a href="/cycles/">Cycles</a>
+    <a href="/activities/">Activities</a>
+    <br>
+    <br>
+    <br>
+</header>
     {% block content %}
     {% endblock %}
 </body>
