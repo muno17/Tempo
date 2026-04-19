@@ -38,10 +38,10 @@
     <tbody>
         {% for segment in activity.segments.all %}
         <tr>
-            <td>{{ segment.type }}</td>
+            <td>{{ segment.get_type_display }}</td>
             <td>{{ segment.distance  }} mi</td>
             <td>{{ segment.duration }}</td>
-            <!-- ADD PACE TO SEGMENTS <td>{{ activity.pace }}/mi</td> -->
+            <td>{{ activity.pace }}/mi</td>
         </tr>
         {% endfor %}
     </tbody>

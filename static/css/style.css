@@ -1,6 +1,12 @@
-td {
+td   {
     margin-right: 50px;
     padding: 20px;
+    color: yellow;
+}
+
+header a {
+    margin-right: 30px;
+    padding: 10px;
     color: yellow;
 }
 

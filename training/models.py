@@ -266,3 +266,19 @@ class Segment(models.Model):
         """Returns the segment's shoe or the activity's default"""
         # using this to be able to set a default in the ui
         return self.shoe or self.activity.default_shoe
+
+    @property
+    def pace(self):
+        """Returns the segment's pace"""
+        miles = float(self.distance)
+        duration = self.duration
+
+        if miles <= 0 or not duration:
+            return "0:00"
+
+        total_seconds = duration.total_seconds()
+        seconds_per_mile = total_seconds / miles
+
+        minutes = int(seconds_per_mile // 60)
+        seconds = int(seconds_per_mile % 60)
+        return f'{minutes}:{seconds:02d}'
