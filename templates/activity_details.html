@@ -1,5 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1>Activity Details</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Pace</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
+            <td>{{ activity.title  }}</td>
+            <td>{{ activity.mileage }} mi</td>
+            <td>{{ activity.time }}</td>
+            <td>{{ activity.pace }}/mi</td>
+        </tr>
+    </tbody>
+</table>
+    <br>
+    <a href="{% url 'cycle-detail' activity.cycle.id %}">Go to Cycle</a>
+    <br>
+    <br>
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Pace</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for segment in activity.segments.all %}
+        <tr>
+            <td>{{ segment.type }}</td>
+            <td>{{ segment.distance  }} mi</td>
+            <td>{{ segment.duration }}</td>
+            <!-- ADD PACE TO SEGMENTS <td>{{ activity.pace }}/mi</td> -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock content %}

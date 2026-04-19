@@ -26,7 +26,6 @@
     <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
     <br>
     <br>
-
 <h2>Activities</h2>
 <table>
     <thead>
@@ -41,7 +40,7 @@
     <tbody>
         {% for activity in cycle.activities.all %}
         <tr>
-            <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
+            <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
             <td>{{ activity.title  }}</td>
             <td>{{ activity.mileage }} mi</td>
             <td>{{ activity.time }}</td>
@@ -50,5 +49,4 @@
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock content %}
