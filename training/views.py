@@ -1,4 +1,8 @@
-from django.shortcuts import render
+from datetime import datetime
+
+from django.forms import inlineformset_factory
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Block, Cycle, Activity, Segment
 
@@ -41,10 +45,18 @@ class ActivityDetailView(DetailView):
     context_object_name = 'activity'
 
 
+# formset is needed to have a nested form for segments within an activity
+SegmentFormSet = inlineformset_factory(
+    Activity, Segment,
+    fields=('distance', 'duration', 'type'),
+    extra=3,  # How many empty rows to show by default
+    can_delete=True
+)
 class ActivityCreateView(CreateView):
     model = Activity
-    fields = ['title', 'time', 'perceived effort', 'notes', 'planned']
+    fields = ['title', 'time', 'perceived_effort', 'notes', 'planned']
     template_name = 'activity_form.html'
+    success_url = reverse_lazy('activity_list')
 
     def get_initial(self):
         """get cycle that was passed in or the current cycle if not"""
@@ -60,13 +72,34 @@ class ActivityCreateView(CreateView):
                 initial['cycle'] = latest_cycle.id
         return initial
 
-
     def get_context_data(self, **kwargs):
+        """Adds the form's segment info to the context"""
+        context = super().get_context_data(**kwargs)
 
+        #context['current_time'] = datetime.now()
+        if self.request.POST:
+            context['segments'] = SegmentFormSet(self.request.POST)
+        else:
+            context['segments'] = SegmentFormSet()
 
+        return context
 
     def form_valid(self, form):
-        pass
+        """Links the Activity to the segments and saves the activity and segments"""
+        self.object = form.save()
+
+        context = self.get_context_data()
+        segments = context['segments']
+
+        if segments.is_valid():
+            segments.instance = self.object
+            segments.save()
+            return redirect(self.success_url)
+        else:
+            # render form with error messages
+            return self.render_to_response(self.get_context_data(form=form))
+
+
 
 
 
