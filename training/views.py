@@ -39,3 +39,34 @@ class ActivityDetailView(DetailView):
     model = Activity
     template_name = 'activity_details.html'
     context_object_name = 'activity'
+
+
+class ActivityCreateView(CreateView):
+    model = Activity
+    fields = ['title', 'time', 'perceived effort', 'notes', 'planned']
+    template_name = 'activity_form.html'
+
+    def get_initial(self):
+        """get cycle that was passed in or the current cycle if not"""
+        initial = super().get_initial()
+
+        cycle_id = self.kwargs.get('cycle_id')
+
+        if cycle_id:
+            initial['cycle'] = cycle_id
+        else:
+            latest_cycle = Cycle.objects.order_by('-id').first()
+            if latest_cycle:
+                initial['cycle'] = latest_cycle.id
+        return initial
+
+
+    def get_context_data(self, **kwargs):
+
+
+
+    def form_valid(self, form):
+        pass
+
+
+
