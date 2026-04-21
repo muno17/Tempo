@@ -54,9 +54,9 @@ SegmentFormSet = inlineformset_factory(
 )
 class ActivityCreateView(CreateView):
     model = Activity
-    fields = ['title', 'time', 'perceived_effort', 'notes', 'planned']
+    fields = ['title', 'timestamp', 'perceived_effort', 'notes', 'planned']
     template_name = 'activity_form.html'
-    success_url = reverse_lazy('activity_list')
+    success_url = reverse_lazy('activity-list')
 
     def get_initial(self):
         """get cycle that was passed in or the current cycle if not"""
