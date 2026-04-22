@@ -212,7 +212,6 @@ class Activity(models.Model):
 
     time_display.fget.short_description = 'Time'
 
-
     @property
     def pace(self):
         """Returns the average pace of the activity"""

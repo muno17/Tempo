@@ -54,7 +54,7 @@ SegmentFormSet = inlineformset_factory(
 )
 class ActivityCreateView(CreateView):
     model = Activity
-    fields = ['title', 'timestamp', 'perceived_effort', 'notes', 'planned']
+    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
     template_name = 'activity_form.html'
     success_url = reverse_lazy('activity-list')
 
