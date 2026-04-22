@@ -47,6 +47,14 @@ class CycleCreateView(CreateView):
 
         block_id = self.kwargs.get('block_id')
 
+        if block_id:
+            initial['block'] = block_id
+        else:
+            latest_block = Block.objects.order_by('-id').first()
+            if latest_block:
+                initial['block'] = latest_block.id
+        return initial
+
 class ActivityListView(ListView):
     model = Activity
     template_name = 'activities.html'
