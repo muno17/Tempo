@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -86,14 +87,23 @@ class ActivityCreateView(CreateView):
 
     def form_valid(self, form):
         """Links the Activity to the segments and saves the activity and segments"""
+        super_user = User.objects.first()
+
+        form.instance.user = super_user
         self.object = form.save()
 
         context = self.get_context_data()
         segments = context['segments']
 
         if segments.is_valid():
-            segments.instance = self.object
-            segments.save()
+            # create the segments objects but don't save since we still need to update each one
+            seg_instances = segments.save(commit=False)
+
+            for instance in seg_instances:
+                instance.user = super_user
+                instance.activity = self.object
+                instance.save()
+
             return redirect(self.success_url)
         else:
             # render form with error messages

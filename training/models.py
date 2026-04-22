@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     PREFERRED_UNITS_CHOICES = [
         ("mi", "Miles"),
         ("km", "Kilometers"),
@@ -23,7 +23,7 @@ class Profile(models.Model):
 
 
 class Shoe(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     brand = models.CharField(max_length=100)
     model_name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
@@ -46,7 +46,7 @@ class Shoe(models.Model):
 
 
 class Block(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     start = models.DateField()
@@ -106,7 +106,7 @@ class Block(models.Model):
 
 
 class Cycle(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     block = models.ForeignKey(Block, on_delete=models.SET_NULL, null=True, blank=True,
                               related_name='cycles')
     start = models.DateField()
@@ -165,7 +165,7 @@ class Cycle(models.Model):
 
 
 class Activity(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     cycle = models.ForeignKey(Cycle, on_delete=models.CASCADE, null=True, blank=True,
                               related_name='activities')
     planned = models.BooleanField(default=False)
@@ -234,7 +234,7 @@ class Activity(models.Model):
 
 
 class Segment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True,
                                  related_name='segments')
     shoe = models.ForeignKey(Shoe, on_delete=models.SET_NULL, null=True, blank=True,)
