@@ -34,6 +34,19 @@ class CycleDetailView(DetailView):
     template_name = 'cycle_details.html'
     context_object_name = 'cycle'
 
+
+class CycleCreateView(CreateView):
+    model = Cycle
+    fields = ['block', 'start', 'end']
+    template_name = 'cycle_form.html'
+    success_url = reverse_lazy('cycle-list')
+
+    def get_initial(self):
+        """get block that was passed in or the current block if not"""
+        initial = super().get_initial()
+
+        block_id = self.kwargs.get('block_id')
+
 class ActivityListView(ListView):
     model = Activity
     template_name = 'activities.html'
