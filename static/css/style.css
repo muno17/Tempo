@@ -1,3 +1,11 @@
+body {
+    background-color: #8E90A4;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif, serif;
+}
+
 td   {
     margin-right: 50px;
     padding: 20px;
@@ -8,14 +16,30 @@ header a {
     margin-right: 30px;
     padding: 10px;
     color: yellow;
+    margin-top: 10px;
+}
+
+header {
+    background-color:#5F9F89;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
 }
 
 h1 {
-    color: red;
+    color: white;
     font-size: 50px;
+    text-shadow: 1px 1px 2px black;
 }
 
 h2 {
     color: green;
     font-size: 30px;
+}
+
+#block-content {
+    padding: 20px;
+    margin: 5px;
 }
