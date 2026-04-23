@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
@@ -36,6 +36,13 @@ class BlockCreateView(CreateView):
         self.object = form.save()
         return redirect(self.success_url)
 
+    def get_form(self):
+        """Have the form render the date fields as date-pickers"""
+        form = super().get_form()
+        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
+        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
+        return form
+
 class CycleListView(ListView):
     model = Cycle
     template_name = 'cycles.html'
@@ -67,6 +74,13 @@ class CycleCreateView(CreateView):
             if latest_block:
                 initial['block'] = latest_block.id
         return initial
+
+    def get_form(self):
+        """Have the form render the date fields as date-pickers"""
+        form = super().get_form()
+        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
+        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
+        return form
 
     def form_valid(self, form):
         """Links the Cycle to the segments and saves the activity and segments"""
@@ -113,6 +127,15 @@ class ActivityCreateView(CreateView):
             if latest_cycle:
                 initial['cycle'] = latest_cycle.id
         return initial
+
+    def get_form(selfs):
+        """Have the form render the timestamp as a date-picker and time field"""
+        form = super().get_form()
+        form.fields['timestamp'].widget = SplitDateTimeWidget(
+            date_attrs={'type': 'date'},
+            time_attrs={'type': 'time'},
+        )
+        return form
 
     def get_context_data(self, **kwargs):
         """Adds the form's segment info to the context"""
