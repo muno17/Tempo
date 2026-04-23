@@ -17,11 +17,24 @@ class BlockListView(ListView):
     context_object_name = 'blocks'
     ordering = ['-start']
 
-
 class BlockDetailView(DetailView):
     model = Block
     template_name = 'block_details.html'
     context_object_name = 'current_block'
+
+
+class BlockCreateView(CreateView):
+    model = Block
+    fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
+    template_name = 'block_form.html'
+    success_url = reverse_lazy('block-list')
+
+    def form_valid(self, form):
+        """Links the Block to the user"""
+        super_user = User.objects.first()
+        form.instance.user = super_user
+        self.object = form.save()
+        return redirect(self.success_url)
 
 class CycleListView(ListView):
     model = Cycle
@@ -54,6 +67,13 @@ class CycleCreateView(CreateView):
             if latest_block:
                 initial['block'] = latest_block.id
         return initial
+
+    def form_valid(self, form):
+        """Links the Cycle to the segments and saves the activity and segments"""
+        super_user = User.objects.first()
+        form.instance.user = super_user
+        self.object = form.save()
+        return redirect(self.success_url)
 
 class ActivityListView(ListView):
     model = Activity
