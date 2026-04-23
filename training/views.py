@@ -54,7 +54,6 @@ class CycleDetailView(DetailView):
     template_name = 'cycle_details.html'
     context_object_name = 'cycle'
 
-
 class CycleCreateView(CreateView):
     model = Cycle
     fields = ['block', 'start', 'end']
@@ -128,7 +127,7 @@ class ActivityCreateView(CreateView):
                 initial['cycle'] = latest_cycle.id
         return initial
 
-    def get_form(selfs):
+    def get_form(self):
         """Have the form render the timestamp as a date-picker and time field"""
         form = super().get_form()
         form.fields['timestamp'].widget = SplitDateTimeWidget(
@@ -141,7 +140,6 @@ class ActivityCreateView(CreateView):
         """Adds the form's segment info to the context"""
         context = super().get_context_data(**kwargs)
 
-        #context['current_time'] = datetime.now()
         if self.request.POST:
             context['segments'] = SegmentFormSet(self.request.POST)
         else:
@@ -173,7 +171,10 @@ class ActivityCreateView(CreateView):
             # render form with error messages
             return self.render_to_response(self.get_context_data(form=form))
 
-
+class ActivityDeleteView(DeleteView):
+    model = Activity
+    template_name = 'activity_delete.html'
+    success_url = reverse_lazy('activity-list')
 
 
 
