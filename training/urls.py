@@ -6,6 +6,7 @@ urlpatterns = [
     path('blocks/', BlockListView.as_view(), name='block-list'),
     path('blocks/<int:pk>/', BlockDetailView.as_view(), name='block-detail'),
     path('block_form/', BlockCreateView.as_view(), name='block-create'),
+    path('block_delete/<int:pk>', BlockDeleteView.as_view(), name='block-delete'),
     path('cycles/', CycleListView.as_view(), name='cycle-list'),
     path('cycles/<int:pk>/', CycleDetailView.as_view(), name='cycle-detail'),
     path('cycle_form/', CycleCreateView.as_view(), name='cycle-create'),

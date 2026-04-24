@@ -43,6 +43,12 @@ class BlockCreateView(CreateView):
         form.fields['end'].widget = DateInput(attrs={'type': 'date'})
         return form
 
+
+class BlockDeleteView(DeleteView):
+    model = Block
+    template_name = 'block_delete.html'
+    success_url = reverse_lazy('block-list')
+
 class CycleListView(ListView):
     model = Cycle
     template_name = 'cycles.html'

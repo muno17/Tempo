@@ -18,7 +18,7 @@
     </thead>
     <tbody>
         {% for cycle in cycles %}
-        <tr></tr>
+        <tr>
             <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
             <td>{{ cycle.end|date:"m/d/Y"  }}</td>
             <td>{{ cycle.mileage }} mi</td>
