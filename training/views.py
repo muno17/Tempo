@@ -1,15 +1,12 @@
-from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget, SplitDateTimeField
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Block, Cycle, Activity, Segment
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-
 
 class BlockListView(ListView):
     model = Block
@@ -21,7 +18,6 @@ class BlockDetailView(DetailView):
     model = Block
     template_name = 'block_details.html'
     context_object_name = 'current_block'
-
 
 class BlockCreateView(CreateView):
     model = Block
@@ -42,7 +38,6 @@ class BlockCreateView(CreateView):
         form.fields['start'].widget = DateInput(attrs={'type': 'date'})
         form.fields['end'].widget = DateInput(attrs={'type': 'date'})
         return form
-
 
 class BlockDeleteView(DeleteView):
     model = Block
@@ -177,6 +172,7 @@ class ActivityCreateView(CreateView):
             # create the segments objects but don't save since we still need to update each one
             seg_instances = segments.save(commit=False)
 
+            # link segment to the superuser and to the activity
             for instance in seg_instances:
                 instance.user = super_user
                 instance.activity = self.object
@@ -193,4 +189,59 @@ class ActivityDeleteView(DeleteView):
     success_url = reverse_lazy('activity-list')
 
 
+class ActivityUpdateView(UpdateView):
+    model = Activity
+    template_name = 'activity_update.html'
+    success_url = reverse_lazy('activity-list')
+
+    def get_context_data(self, **kwargs):
+        """Adds the Activity's segment info to the context"""
+        context = super().get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['segments'] = SegmentFormSet(self.request.POST, instance=self.object)
+        else:
+            context['segments'] = SegmentFormSet(instance=self.object)
+
+        return context
+
+    def get_form(self):
+        """Have the form render the timestamp as a date-picker and time field"""
+        form = super().get_form()
+        # SplitDateTimeWidget separates the datetime so we can have two separate fields
+        # SplitDateTimeField joins the date and time fields into a single datetime object
+        form.fields['timestamp'] = SplitDateTimeField(
+            widget=SplitDateTimeWidget(
+            date_attrs={'type': 'date'},
+            time_attrs={'type': 'time'}
+            )
+        )
+        return form
+
+    def form_valid(self, form):
+        """Links the Activity to the segments, handles updating/deleting segments"""
+        super_user = User.objects.first()
+        form.instance.user = super_user
+
+        context = self.get_context_data()
+        segments = context['segments']
+        self.object = form.save()
+
+        if segments.is_valid():
+            # create/delete the segments objects but don't save since we still need to update each one
+            seg_instances = segments.save(commit=False)
+
+            for seg in segments.deleted_objects:
+                seg.delete()
+
+            # link segment to the superuser and to the activity
+            for instance in seg_instances:
+                instance.user = super_user
+                instance.activity = self.object
+                instance.save()
+
+            return super().form_valid(form)
+        else:
+            # render form with error messages
+            return self.render_to_response(self.get_context_data(form=form))
 
