@@ -42,6 +42,8 @@
             <th>Distance</th>
             <th>Time</th>
             <th>Pace</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -52,6 +54,8 @@
             <td>{{ activity.mileage }} mi</td>
             <td>{{ activity.time }}</td>
             <td>{{ activity.pace }}/mi</td>
+            <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
+            <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -4,6 +4,7 @@
     <form method="post">
     {% csrf_token %}
     <h1>Activity</h1>
+        <a href="{% url 'activity-detail' activity.id%}">Go back to Activity</a>
     {{ form.as_p }}
 
     <div class="segments-section">
