@@ -192,6 +192,7 @@ class ActivityDeleteView(DeleteView):
 class ActivityUpdateView(UpdateView):
     model = Activity
     template_name = 'activity_update.html'
+    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
     success_url = reverse_lazy('activity-list')
 
     def get_context_data(self, **kwargs):
