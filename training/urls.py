@@ -10,6 +10,7 @@ urlpatterns = [
     path('cycles/<int:pk>/', CycleDetailView.as_view(), name='cycle-detail'),
     path('cycle_form/', CycleCreateView.as_view(), name='cycle-create'),
     path('cycle_form/<int:block_id>/', CycleCreateView.as_view(), name='cycle-create'),
+    path('cycle_delete/<int:pk>/', CycleDeleteView.as_view(), name='cycle-delete'),
     path('activities/', ActivityListView.as_view(), name='activity-list'),
     path('activities/<int:pk>', ActivityDetailView.as_view(), name='activity-detail'),
     path('activity_form/', ActivityCreateView.as_view(), name='activity-create'),

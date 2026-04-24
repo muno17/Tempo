@@ -7,9 +7,18 @@ body {
 }
 
 td   {
-    margin-right: 50px;
     padding: 20px;
     color: yellow;
+    text-align: right;
+}
+
+th {
+    text-shadow: 1px 1px 2px black;
+}
+
+th, td {
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 header a {
@@ -22,6 +31,7 @@ header a {
 header {
     background-color:#5F9F89;
     margin: 0;
+    padding: 10px;
 }
 
 a {
@@ -31,7 +41,7 @@ a {
 h1 {
     color: white;
     font-size: 50px;
-    text-shadow: 1px 1px 2px black;
+    text-shadow: 1px 1px 4px black;
 }
 
 h2 {

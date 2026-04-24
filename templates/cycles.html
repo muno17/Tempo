@@ -13,6 +13,7 @@
             <th>Total Mileage</th>
             <th>Total Time</th>
             <th>Average Pace</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
             <td>{{ cycle.mileage }} mi</td>
             <td>{{ cycle.time }}</td>
             <td>{{ cycle.pace }}/mi</td>
+            <td><a href="{% url 'cycle-delete' cycle.id%}">Delete</a></td>
         </tr>
         {% endfor %}
     </tbody>

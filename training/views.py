@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget
+from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget, SplitDateTimeField
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
@@ -53,6 +53,11 @@ class CycleDetailView(DetailView):
     model = Cycle
     template_name = 'cycle_details.html'
     context_object_name = 'cycle'
+
+class CycleDeleteView(DeleteView):
+    model = Cycle
+    template_name = 'cycle_delete.html'
+    success_url = reverse_lazy('cycle-list')
 
 class CycleCreateView(CreateView):
     model = Cycle
@@ -130,9 +135,13 @@ class ActivityCreateView(CreateView):
     def get_form(self):
         """Have the form render the timestamp as a date-picker and time field"""
         form = super().get_form()
-        form.fields['timestamp'].widget = SplitDateTimeWidget(
+        # SplitDateTimeWidget separates the datetime so we can have two separate fields
+        # SplitDateTimeField joins the date and time fields into a single datetime object
+        form.fields['timestamp'] = SplitDateTimeField(
+            widget=SplitDateTimeWidget(
             date_attrs={'type': 'date'},
-            time_attrs={'type': 'time'},
+            time_attrs={'type': 'time'}
+            )
         )
         return form
 
