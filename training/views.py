@@ -95,6 +95,13 @@ class CycleCreateView(CreateView):
         self.object = form.save()
         return redirect(self.success_url)
 
+
+class CycleUpdateView(UpdateView):
+    model = Cycle
+    template_name = 'cycle_update.html'
+    fields = ['block', 'start', 'end']
+    success_url = reverse_lazy('cycle-list')
+
 class ActivityListView(ListView):
     model = Activity
     template_name = 'activities.html'
