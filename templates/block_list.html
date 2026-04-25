@@ -15,6 +15,7 @@
             <th>Total Time</th>
             <th>Average Pace</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
             <td>{{ block.mileage }} mi</td>
             <td>{{ block.time }}</td>
             <td>{{ block.pace }}/mi</td>
+            <td><a href="{% url 'block-update' block.id%}">Update</a></td>
             <td><a href="{% url 'block-delete' block.id%}">Delete</a></td>
         </tr>
         {% endfor %}

@@ -45,6 +45,14 @@ class BlockDeleteView(DeleteView):
     context_object_name = 'current_block'
     success_url = reverse_lazy('block-list')
 
+
+class BlockUpdateView(UpdateView):
+    model = Block
+    template_name = 'block_update.html'
+    fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
+    context_object_name = 'current_block'
+    success_url = reverse_lazy('block-list')
+
 class CycleListView(ListView):
     model = Cycle
     template_name = 'cycles.html'
