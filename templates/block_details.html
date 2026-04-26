@@ -51,11 +51,12 @@
             </div>
         </div>
         {% endif %}
+        <hr>
         <div class="header-box">
-        <div class="sub-header">Cycles</div>
-        <div class="button">
-            <a href="{% url 'cycle-create' current_block.id %}">Add Cycle</a>
-        </div>
+            <div class="sub-header">Cycles</div>
+            <div class="button">
+                <a href="{% url 'cycle-create' current_block.id %}">+ add Cycle</a>
+            </div>
         </div>
         <table>
             <thead>

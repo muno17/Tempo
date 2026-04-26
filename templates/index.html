@@ -10,6 +10,7 @@
         <div>Total Activities: {{ activity_count }}</div>
     </div>
     {% if latest_block %}
+        <hr>
         <a href="{% url 'block-detail' latest_block.id%}">
             <div class="main-header">Latest Block</div>
             <table>
@@ -51,6 +52,7 @@
         </a>
     {% endif %}
     {% if latest_cycle %}
+        <hr>
         <a href="{% url 'cycle-detail' latest_cycle.id%}">
         <div class="main-header">Latest Cycle</div>
             <table>
@@ -90,6 +92,7 @@
                 </tbody>
             </table>
         </a>
+        <hr>
         <div class="main-header">Latest Activities</div>
             <table>
                 <thead>

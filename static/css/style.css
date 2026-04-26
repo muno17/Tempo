@@ -9,7 +9,6 @@ body {
 #block-content {
     padding: 20px;
     margin: 5px;
-
 }
 
 td   {
@@ -77,14 +76,14 @@ a {
 div .alltime-stats {
     display: flex;
     flex-direction: column;
-    font-size: 20px;
-    gap: 10px;
+    font-size: 22px;
+    gap: 15px;
 }
 
 .stats-block {
     background-color: #f7fbec;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
     box-shadow: 1px 1px 3px black;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -109,7 +108,7 @@ div .alltime-stats {
     padding-bottom: 20px;
 }
 
-.button {
+.button, button {
     background-color:#5F9F89;
     border-radius: 5px;
     box-shadow: 1px 1px 3px black;
@@ -120,8 +119,36 @@ div .alltime-stats {
 
 .delete {
     background-color: #EB92A3;
+    width: 60px;
 }
 
 .update {
-    background-color: #BC81BF
+    background-color: #BC81BF;
+    width: 60px;
+}
+
+button {
+    width: 100px;
+}
+
+.save {
+    background-color:#ECC987;
+    color: white;
+    font-size: 20px;
+}
+
+form p {
+    margin-bottom: 15px;
+    gap: 15px;
+    display: flex;
+}
+
+form p label {
+    width: 90px;
+    min-width: 90px;
+}
+
+p {
+    font-weight: bold;
+    display: flex;
 }
