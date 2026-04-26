@@ -10,6 +10,7 @@
                 <th>Distance</th>
                 <th>Time</th>
                 <th>Pace</th>
+                <th>Perceived Effort</th>
             </tr>
         </thead>
         <tbody>
@@ -19,9 +20,18 @@
                 <td>{{ activity.mileage }} mi</td>
                 <td>{{ activity.time }}</td>
                 <td>{{ activity.pace }}/mi</td>
+                <td>{{ activity.perceived_effort }}</td>
             </tr>
         </tbody>
     </table>
+    {% if activity.notes %}
+    <div class="text-box">
+        <h3>Notes</h3>
+        <div>
+            {{ activity.notes }}
+        </div>
+    </div>
+    {% endif %}
         <br>
         <a href="{% url 'cycle-detail' activity.cycle.id %}">Go to Cycle</a>
         <br>

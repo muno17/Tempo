@@ -46,6 +46,7 @@
             <th>Distance</th>
             <th>Time</th>
             <th>Pace</th>
+            <th>Perceived Effort</th>
             <th></th>
             <th></th>
         </tr>
@@ -58,6 +59,7 @@
             <td>{{ activity.mileage }} mi</td>
             <td>{{ activity.time }}</td>
             <td>{{ activity.pace }}/mi</td>
+            <td>{{ activity.perceived_effort }}</td>
             <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
             <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
         </tr>
