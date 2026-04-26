@@ -40,18 +40,29 @@ a {
     text-decoration: none;
 }
 
-h1 {
+h1, h2 {
     color: white;
-    font-size: 50px;
     text-shadow: 1px 1px 4px black;
+    padding-top: 15px;
+}
+
+h1 {
+    font-size: 50px;
 }
 
 h2 {
-    color: green;
     font-size: 30px;
 }
 
 #block-content {
     padding: 20px;
     margin: 5px;
+}
+
+.stats-block {
+    background-color: #DED9C4;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px black;
 }
