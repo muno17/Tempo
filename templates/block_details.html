@@ -28,12 +28,22 @@
             </tr>
         </tbody>
     </table>
+    {% if current_block.goals %}
+    <div class="text-box">
+        <h3>Goals</h3>
+        <div>
+            {{ current_block.goals }}
+        </div>
+    </div>
+    {% endif %}
+    {% if current_block.notes %}
     <div class="text-box">
         <h3>Notes</h3>
         <div>
             {{ current_block.notes }}
         </div>
     </div>
+    {% endif %}
     <br>
     <br>
     <br>
