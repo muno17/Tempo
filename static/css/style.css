@@ -69,6 +69,11 @@ h2 {
     box-shadow: 1px 1px 3px black;
 }
 
+.form-block {
+    background-color: #A3D4C3;
+    padding-bottom: 15px;
+}
+
 .text-box {
     background-color: #DAEBFA;
 }
