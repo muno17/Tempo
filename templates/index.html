@@ -2,15 +2,16 @@
 
 
 {% block content %}
-<h1>Tempo</h1>
-    <div>yoyoyo welcome</div>
-    <h1>All-time Stats</h1>
-    <div>Total Miles: {{ total_miles }} mi</div>
-    <div>Total Time: {{ total_duration }} Hours</div>
-    <div>Total Activities: {{ activity_count }}</div>
+    <div class="stats-block">
+    <div class="main-header">All-time Stats</div>
+    <div class="alltime-stats">
+        <div>Total Miles: {{ total_miles }} mi</div>
+        <div>Total Time: {{ total_duration }} Hours</div>
+        <div>Total Activities: {{ activity_count }}</div>
+    </div>
     {% if latest_block %}
-        <div class="stats-block">
-            <h1>Latest Block</h1>
+        <a href="{% url 'block-detail' latest_block.id%}">
+            <div class="main-header">Latest Block</div>
             <table>
                 <thead>
                     <tr>
@@ -20,6 +21,7 @@
                         <th>Total Mileage</th>
                         <th>Total Time</th>
                         <th>Average Pace</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -32,16 +34,25 @@
                         <td>{{ latest_block.mileage }} mi</td>
                         <td>{{ latest_block.time }}</td>
                         <td>{{ latest_block.pace }}/mi</td>
-                        <td><a href="{% url 'block-update' latest_block.id%}">Update</a></td>
-                        <td><a href="{% url 'block-delete' latest_block.id%}">Delete</a></td>
+                        <td></td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'block-update' latest_block.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'block-delete' latest_block.id%}">Delete</a>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </a>
     {% endif %}
     {% if latest_cycle %}
-        <div class="stats-block">
-        <h1>Latest Cycle</h1>
+        <a href="{% url 'cycle-detail' latest_cycle.id%}">
+        <div class="main-header">Latest Cycle</div>
             <table>
                 <thead>
                     <tr>
@@ -50,6 +61,8 @@
                         <th>Total Mileage</th>
                         <th>Total Time</th>
                         <th>Average Pace</th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -61,14 +74,23 @@
                         <td>{{ latest_cycle.mileage }} mi</td>
                         <td>{{ latest_cycle.time }}</td>
                         <td>{{ latest_cycle.pace }}/mi</td>
-                        <td><a href="{% url 'cycle-update' latest_cycle.id%}">Update</a></td>
-                        <td><a href="{% url 'cycle-delete' latest_cycle.id%}">Delete</a></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'cycle-update' latest_cycle.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'cycle-delete' latest_cycle.id%}">Delete</a>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="stats-block">
-        <h2>Latest Cycle Activities</h2>
+        </a>
+        <div class="main-header">Latest Activities</div>
             <table>
                 <thead>
                     <tr>
@@ -77,6 +99,8 @@
                         <th>Distance</th>
                         <th>Time</th>
                         <th>Pace</th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -89,12 +113,22 @@
                         <td>{{ activity.mileage }} mi</td>
                         <td>{{ activity.time }}</td>
                         <td>{{ activity.pace }}/mi</td>
-                        <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
-                        <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'activity-update' activity.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'activity-delete' activity.id%}">Delete</a>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
     {% endif %}
+    </div>
 {% endblock %}

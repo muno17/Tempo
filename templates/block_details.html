@@ -1,84 +1,98 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Block Details</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Total Mileage</th>
-                <th>Total Time</th>
-                <th>Average Pace</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ current_block.name }}</td>
-                <td>{{ current_block.start|date:"m/d/Y"  }}</td>
-                <td>{{ current_block.end|date:"m/d/Y"  }}</td>
-                <td>{{ current_block.mileage }} mi</td>
-                <td>{{ current_block.time }}</td>
-                <td>{{ current_block.pace }}/mi</td>
-                <td><a href="{% url 'block-update' current_block.id%}">Update</a></td>
-                <td><a href="{% url 'block-delete' current_block.id%}">Delete</a></td>
-            </tr>
-        </tbody>
-    </table>
-    {% if current_block.goals %}
-    <div class="text-box">
-        <h3>Goals</h3>
-        <div>
-            {{ current_block.goals }}
+    <div class="stats-block">
+        <div class="main-header">{{ current_block.name }}</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Mileage</th>
+                    <th>Total Time</th>
+                    <th>Average Pace</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ current_block.start|date:"m/d/Y"  }}</td>
+                    <td>{{ current_block.end|date:"m/d/Y"  }}</td>
+                    <td>{{ current_block.mileage }} mi</td>
+                    <td>{{ current_block.time }}</td>
+                    <td>{{ current_block.pace }}/mi</td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'block-update' current_block.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'block-delete' current_block.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% if current_block.goals %}
+        <div class="text-box">
+            <div class="mini-header">Goals</div>
+            <div>
+                {{ current_block.goals }}
+            </div>
+        </div>
+        {% endif %}
+        {% if current_block.notes %}
+        <div class="text-box">
+            <div class="mini-header">Notes</div>
+            <div>
+                {{ current_block.notes }}
+            </div>
+        </div>
+        {% endif %}
+        <div class="header-box">
+        <div class="sub-header">Cycles</div>
+        <div class="button">
+            <a href="{% url 'cycle-create' current_block.id %}">Add Cycle</a>
+        </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Mileage</th>
+                    <th>Total Time</th>
+                    <th>Average Pace</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cycle in current_block.cycles.all %}
+                <tr>
+                    <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
+                    <td>{{ cycle.end|date:"m/d/Y"  }}</td>
+                    <td>{{ cycle.mileage }} mi</td>
+                    <td>{{ cycle.time }}</td>
+                    <td>{{ cycle.pace }}/mi</td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'cycle-update' cycle.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'cycle-delete' cycle.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="button delete">
+            <a href="{% url 'block-delete' current_block.id %}">Delete Block</a>
         </div>
     </div>
-    {% endif %}
-    {% if current_block.notes %}
-    <div class="text-box">
-        <h3>Notes</h3>
-        <div>
-            {{ current_block.notes }}
-        </div>
-    </div>
-    {% endif %}
-    <br>
-    <br>
-    <br>
-
-    <h2>Cycles</h2>
-    <a href="{% url 'cycle-create' current_block.id %}">Add Cycle</a>
-    <br>
-    <br>
-    <table>
-        <thead>
-            <tr>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Total Mileage</th>
-                <th>Total Time</th>
-                <th>Average Pace</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cycle in current_block.cycles.all %}
-            <tr>
-                <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
-                <td>{{ cycle.end|date:"m/d/Y"  }}</td>
-                <td>{{ cycle.mileage }} mi</td>
-                <td>{{ cycle.time }}</td>
-                <td>{{ cycle.pace }}/mi</td>
-                <td><a href="{% url 'cycle-update' cycle.id%}">Update</a></td>
-                <td><a href="{% url 'cycle-delete' cycle.id%}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <br>
-    <a href="{% url 'block-delete' current_block.id %}">Delete Block</a>
 {% endblock content %}
