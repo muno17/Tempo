@@ -1,73 +1,102 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Cycle Details</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Total Mileage</th>
-            <th>Total Time</th>
-            <th>Average Pace</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{ cycle.start|date:"m/d/Y"  }}</td>
-            <td>{{ cycle.end|date:"m/d/Y"  }}</td>
-            <td>{{ cycle.mileage }} mi</td>
-            <td>{{ cycle.time }}</td>
-            <td>{{ cycle.pace }}/mi</td>
-            <td><a href="{% url 'cycle-update' cycle.id%}">Update</a></td>
-            <td><a href="{% url 'cycle-delete' cycle.id%}">Delete</a></td>
-        </tr>
-    </tbody>
-</table>
-    <br>
-    {% if cycle.block.id %}
-        <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
-    {% else %}
-        <div>No Block is currently associated with this Cycle, click edit to associate a Block</div>
-    {% endif %}
-    <br>
-    <br>
-<h2>Activities</h2>
-    <a href="{% url 'activity-create' cycle.id%}">Add Activity</a>
-    <br>
-    <br>
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Title</th>
-            <th>Distance</th>
-            <th>Time</th>
-            <th>Pace</th>
-            <th>Perceived Effort</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for activity in cycle.activities.all %}
-        <tr>
-            <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
-            <td>{{ activity.title  }}</td>
-            <td>{{ activity.mileage }} mi</td>
-            <td>{{ activity.time }}</td>
-            <td>{{ activity.pace }}/mi</td>
-            <td>{{ activity.perceived_effort }}</td>
-            <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
-            <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-    <br>
-    <br>
-<a href="{% url 'cycle-delete' cycle.id%}">Delete Cycle</a>
-
+    <div class="stats-block">
+        <div class="main-header">Cycle Details</div>
+        {% if cycle.block.id %}
+            <div class="button">
+                <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
+            </div>
+        {% else %}
+            <div class="default-message">No Block is currently associated with this Cycle, click edit to associate a Block</div>
+        {% endif %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Mileage</th>
+                    <th>Total Time</th>
+                    <th>Average Pace</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ cycle.start|date:"m/d/Y"  }}</td>
+                    <td>{{ cycle.end|date:"m/d/Y"  }}</td>
+                    <td>{{ cycle.mileage }} mi</td>
+                    <td>{{ cycle.time }}</td>
+                    <td>{{ cycle.pace }}/mi</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'cycle-update' cycle.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'cycle-delete' cycle.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div class="header-box">
+            <div class="sub-header">Activities</div>
+            <div class="button">
+                <a href="{% url 'activity-create' cycle.id%}">+ add Activity</a>
+            </div>
+        </div>
+        {% if cycle.activities|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Distance</th>
+                        <th>Time</th>
+                        <th>Pace</th>
+                        <th>Perceived Effort</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in cycle.activities.all %}
+                    <tr>
+                        <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
+                        <td>{{ activity.title  }}</td>
+                        <td>{{ activity.mileage }} mi</td>
+                        <td>{{ activity.time }}</td>
+                        <td>{{ activity.pace }}/mi</td>
+                        <td>{{ activity.perceived_effort }}</td>
+                        <td></td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'activity-update' activity.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'activity-delete' activity.id%}">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+        <div class="default-message">No Activities associated with Cycle</div>
+        {% endif %}
+        <div class="button delete">
+            <a href="{% url 'cycle-delete' cycle.id%}">Delete Cycle</a>
+        </div>
+    </div>
 {% endblock content %}

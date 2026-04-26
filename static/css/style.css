@@ -11,10 +11,19 @@ body {
     margin: 5px;
 }
 
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 td   {
     padding: 20px;
     text-align: right;
     width: 80px;
+}
+
+td, th {
+    text-align: center;
 }
 
 th, td, .text-box {
@@ -46,6 +55,10 @@ a {
 .main-header {
     font-size: 50px;
     font-weight: bold;
+}
+
+#index-top {
+    padding-top: 30px;
 }
 
 .sub-header {
@@ -119,7 +132,7 @@ div .alltime-stats {
 
 .delete {
     background-color: #EB92A3;
-    width: 60px;
+    min-width: 60px;
 }
 
 .update {
@@ -151,4 +164,13 @@ form p label {
 p {
     font-weight: bold;
     display: flex;
+}
+
+input {
+    padding: 5px;
+}
+
+.default-message {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

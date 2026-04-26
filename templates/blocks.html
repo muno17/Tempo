@@ -22,6 +22,7 @@
                         <th>Average Pace</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,7 @@
                         <td>{{ block.mileage }} mi</td>
                         <td>{{ block.time }}</td>
                         <td>{{ block.pace }}/mi</td>
+                        <td></td>
                         <td>
                             <div class="button update">
                                 <a href="{% url 'block-update' block.id%}">Update</a>
@@ -48,7 +50,7 @@
                 </tbody>
             </table>
         {% else %}
-            <div>No Blocks currently exist</div>
+            <div class="default-message">No Blocks currently exist</div>
         {% endif %}
     </div>
 {% endblock content %}

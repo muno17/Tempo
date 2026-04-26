@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <h1>Cycle</h1>
-        <a href="{% url 'cycle-detail' cycle.id%}">Go back to Cycle</a>
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+    <div class="stats-block form-block">
+        <form method="post">
+            {% csrf_token %}
+            <div class="main-header">Cycle</div>
+            <div class="button">
+                <a href="{% url 'cycle-detail' cycle.id%}">Go back to Cycle</a>
+            </div>
+            {{ form.as_p }}
+            <button type="submit" class="save">Save</button>
+        </form>
+    </div>
 {% endblock content %}

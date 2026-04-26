@@ -25,7 +25,7 @@ class IndexView(TemplateView):
 
 class BlockListView(ListView):
     model = Block
-    template_name = 'block_list.html'
+    template_name = 'blocks.html'
     context_object_name = 'blocks'
     ordering = ['-start']
 

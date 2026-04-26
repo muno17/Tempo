@@ -1,34 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Cycles</h1>
-    <a href="{% url 'cycle-create' %}">Add Cycle</a>
-    <br>
-    <br>
-<table>
-    <thead>
-        <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Total Mileage</th>
-            <th>Total Time</th>
-            <th>Average Pace</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for cycle in cycles %}
-        <tr>
-            <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
-            <td>{{ cycle.end|date:"m/d/Y"  }}</td>
-            <td>{{ cycle.mileage }} mi</td>
-            <td>{{ cycle.time }}</td>
-            <td>{{ cycle.pace }}/mi</td>
-            <td><a href="{% url 'cycle-update' cycle.id%}">Update</a></td>
-            <td><a href="{% url 'cycle-delete' cycle.id%}">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="stats-block">
+    <div class="header-box">
+        <div class="main-header">Cycles</div>
+        <div class="button">
+            <a href="{% url 'cycle-create' %}">+ add Cycle</a>
+        </div>
+    </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Mileage</th>
+                    <th>Total Time</th>
+                    <th>Average Pace</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cycle in cycles %}
+                <tr>
+                    <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
+                    <td>{{ cycle.end|date:"m/d/Y"  }}</td>
+                    <td>{{ cycle.mileage }} mi</td>
+                    <td>{{ cycle.time }}</td>
+                    <td>{{ cycle.pace }}/mi</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'cycle-update' cycle.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'cycle-delete' cycle.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}
