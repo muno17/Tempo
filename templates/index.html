@@ -4,4 +4,92 @@
 {% block content %}
 <h1>Tempo</h1>
     <div>yoyoyo welcome</div>
+    <h1>All-time Stats</h1>
+    <div>Total Miles: {{ total_miles }} mi</div>
+    <div>Total Time: {{ total_duration }} Hours</div>
+    {% if latest_block %}
+    <h1>Latest Block</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Mileage</th>
+                <th>Total Time</th>
+                <th>Average Pace</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="{% url 'block-detail' latest_block.id  %}">{{ latest_block.name }}</a></td>
+                <td>{{ latest_block.start|date:"m/d/Y"  }}</td>
+                <td>{{ latest_block.end|date:"m/d/Y"  }}</td>
+                <td>{{ latest_block.mileage }} mi</td>
+                <td>{{ latest_block.time }}</td>
+                <td>{{ latest_block.pace }}/mi</td>
+                <td><a href="{% url 'block-update' latest_block.id%}">Update</a></td>
+                <td><a href="{% url 'block-delete' latest_block.id%}">Delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if latest_cycle %}
+    <h1>Latest Cycle</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Mileage</th>
+            <th>Total Time</th>
+            <th>Average Pace</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ latest_cycle.start|date:"m/d/Y"  }}</td>
+            <td>{{ latest_cycle.end|date:"m/d/Y"  }}</td>
+            <td>{{ latest_cycle.mileage }} mi</td>
+            <td>{{ latest_cycle.time }}</td>
+            <td>{{ latest_cycle.pace }}/mi</td>
+            <td><a href="{% url 'cycle-update' latest_cycle.id%}">Update</a></td>
+            <td><a href="{% url 'cycle-delete' latest_cycle.id%}">Delete</a></td>
+        </tr>
+    </tbody>
+</table>
+<h2>Cycle Activities</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Pace</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in latest_cycle.activities.all %}
+        <tr>
+            <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
+            <td>{{ activity.title  }}</td>
+            <td>{{ activity.mileage }} mi</td>
+            <td>{{ activity.time }}</td>
+            <td>{{ activity.pace }}/mi</td>
+            <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
+            <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <br>
+    <br>
+    {% endif %}
 {% endblock %}

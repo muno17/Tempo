@@ -3,10 +3,22 @@ from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget, 
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
+from django.db.models import Sum
 from .models import Block, Cycle, Activity, Segment
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        """Get the latest block, cycle and activity info"""
+        context = super().get_context_data(**kwargs)
+
+        context['latest_block'] = Block.objects.order_by('-id').first()
+        context['latest_cycle'] = Cycle.objects.order_by('-id').first()
+        context['total_miles'] = Segment.objects.aggregate(Sum('distance'))['distance__sum']
+        context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
+        return context
+
 
 class BlockListView(ListView):
     model = Block
