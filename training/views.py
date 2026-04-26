@@ -17,6 +17,9 @@ class IndexView(TemplateView):
         context['latest_cycle'] = Cycle.objects.order_by('-id').first()
         context['total_miles'] = Segment.objects.aggregate(Sum('distance'))['distance__sum']
         context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
+        context['activity_count'] = Activity.objects.count()
+        # longest run
+        # average overall pace
         return context
 
 

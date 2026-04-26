@@ -8,16 +8,10 @@ body {
 
 td   {
     padding: 20px;
-    color: yellow;
     text-align: right;
 }
 
-th {
-    text-shadow: 1px 1px 2px black;
-    color: white;
-}
-
-th, td {
+th, td, h3 {
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -25,7 +19,6 @@ th, td {
 header a {
     margin-right: 30px;
     padding: 10px;
-    color: yellow;
     margin-top: 10px;
 }
 
@@ -38,11 +31,10 @@ header {
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 h1, h2 {
-    color: white;
-    text-shadow: 1px 1px 4px black;
     padding-top: 15px;
 }
 
@@ -60,9 +52,13 @@ h2 {
 }
 
 .stats-block {
-    background-color: #DED9C4;
+    background-color: #f7fbec;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 5px;
     box-shadow: 1px 1px 3px black;
+}
+
+.text-box {
+    background-color: #DAEBFA;
 }
