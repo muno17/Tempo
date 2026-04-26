@@ -1,36 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Blocks</h1>
-<a href="{% url 'block-create' %}">Add Block</a>
-<br>
-<br>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Total Mileage</th>
-            <th>Total Time</th>
-            <th>Average Pace</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for block in blocks %}
-        <tr>
-            <td><a href="{% url 'block-detail' block.id  %}">{{ block.name }}</a></td>
-            <td>{{ block.start|date:"m/d/Y"  }}</td>
-            <td>{{ block.end|date:"m/d/Y"  }}</td>
-            <td>{{ block.mileage }} mi</td>
-            <td>{{ block.time }}</td>
-            <td>{{ block.pace }}/mi</td>
-            <td><a href="{% url 'block-update' block.id%}">Update</a></td>
-            <td><a href="{% url 'block-delete' block.id%}">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="stats-block">
+        <div class="header-box">
+            <div class="main-header">Blocks</div>
+            <div class="button">
+                <a href="{% url 'block-create' %}">+ create Block</a>
+            </div>
+        </div>
+        <br>
+        <br>
+        {% if blocks %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Total Mileage</th>
+                        <th>Total Time</th>
+                        <th>Average Pace</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for block in blocks %}
+                    <tr>
+                        <td><a href="{% url 'block-detail' block.id  %}">{{ block.name }}</a></td>
+                        <td>{{ block.start|date:"m/d/Y"  }}</td>
+                        <td>{{ block.end|date:"m/d/Y"  }}</td>
+                        <td>{{ block.mileage }} mi</td>
+                        <td>{{ block.time }}</td>
+                        <td>{{ block.pace }}/mi</td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'block-update' block.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'block-delete' block.id%}">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div>No Blocks currently exist</div>
+        {% endif %}
+    </div>
 {% endblock content %}
