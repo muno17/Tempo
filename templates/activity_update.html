@@ -2,46 +2,41 @@
 
 {% block content %}
     <div class="form-block">
-    <form method="post">
-    {% csrf_token %}
-    <div class="header-block">
-        <div class="main-header">Activity</div>
-            <div class="button">
-                <a href="{% url 'activity-detail' activity.id%}">Go back to Activity</a>
-            </div>
-    </div>
-    {{ form.as_p }}
+        <form method="post">
+        {% csrf_token %}
+            <div class="main-header">Activity</div>
+        {{ form.as_p }}
 
-    <div class="segments-section">
-        {{ segments.management_form }}
-        <div class="sub-header">Segments</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Distance</th>
-                        <th>Duration</th>
-                        <th>Type</th>
-                        <th>Shoe</th>
-                        <th>Delete?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for s_form in segments %}
+        <div class="segments-section">
+            {{ segments.management_form }}
+            <div class="sub-header">Segments</div>
+                <table>
+                    <thead>
                         <tr>
-                            {% for hidden in s_form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <td>{{ s_form.distance }}</td>
-                            <td>{{ s_form.duration }}</td>
-                            <td>{{ s_form.type }}</td>
-                            <td>{{ s_form.shoe }}</td>
-                            <td>{{ s_form.DELETE }}</td>
+                            <th>Distance</th>
+                            <th>Duration</th>
+                            <th>Type</th>
+                            <th>Shoe</th>
+                            <th>Delete?</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-    </div>
-    <button type="submit" class="save">Save</button>
-    </form>
+                    </thead>
+                    <tbody>
+                        {% for s_form in segments %}
+                            <tr>
+                                {% for hidden in s_form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <td>{{ s_form.distance }}</td>
+                                <td>{{ s_form.duration }}</td>
+                                <td>{{ s_form.type }}</td>
+                                <td>{{ s_form.shoe }}</td>
+                                <td>{{ s_form.DELETE }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+        <button type="submit" class="save">Save</button>
+        </form>
     </div>
 {% endblock content %}
