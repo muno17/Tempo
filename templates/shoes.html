@@ -17,21 +17,40 @@
                     <th>Mileage</th>
                     <th>Date Added</th>
                     <th>Retired?</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for shoe in shoes %}
                     <tr>
-                        <td>{{ shoe.nickname }}</td>
+                        <td><a href="{% url 'shoe-detail' shoe.id %}">{{ shoe.nickname }}</a></td>
                         <td>{{ shoe.brand }}</td>
                         <td>{{ shoe.model_name }}</td>
                         <td>{{ shoe.mileage }}</td>
                         <td>{{ shoe.date_added|date:"m/d/y" }}</td>
-                        <td>{{ shoe.is_retired }}</td>
+                        <td>
+                        {% if shoe.is_retired %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="button update">
+                                <a href="{% url 'shoe-update' shoe.id%}">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button delete">
+                                <a href="{% url 'shoe-delete' shoe.id%}">Delete</a>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
 {% endblock content %}

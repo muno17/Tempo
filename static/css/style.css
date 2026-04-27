@@ -57,7 +57,7 @@ a {
 .main-header {
     font-size: 44px;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #index-top {
@@ -67,6 +67,7 @@ a {
 .sub-header {
     font-size: 30px;
     font-weight: bold;
+    margin-bottom: 15px;
 }
 
 .main-header, .sub-header {
@@ -103,6 +104,8 @@ div .alltime-stats {
     margin-top: 20px;
     margin-bottom: 20px;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .stats-block {
@@ -115,6 +118,9 @@ div .alltime-stats {
 
 .delete-block {
     background-color: #EB92A3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .text-box {
@@ -154,9 +160,13 @@ div .alltime-stats {
     gap: 50px;
 }
 
+.delete-header {
+    text-align: center;
+}
+
 .update {
     background-color: #BC81BF;
-    width: 60px;
+    min-width: 60px;
 }
 
 button {
@@ -193,4 +203,8 @@ input {
 .default-message {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+hr {
+    width: 100%;
 }

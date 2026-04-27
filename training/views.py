@@ -292,7 +292,22 @@ class ShoeCreateView(CreateView):
     fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
 
-    #def get_initial(self):
-    #    initial = super.get_initial()
-    #    initial['init_mileage'] = 0
-    #    return initial
+
+class ShoeDetailView(DetailView):
+    model = Shoe
+    template_name ='shoe_details.html'
+    context_object_name = 'shoe'
+
+
+class ShoeUpdateView(UpdateView):
+    model = Shoe
+    template_name = 'shoe_update.html'
+    fields = ['brand', 'model_name', 'nickname', 'is_retired', 'notes']
+    success_url = reverse_lazy('shoe-list')
+
+
+class ShoeDeleteView(DeleteView):
+    model = Shoe
+    template_name = 'shoe_delete.html'
+    context_object_name = 'shoe'
+    success_url = reverse_lazy('shoe-list')

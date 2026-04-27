@@ -22,4 +22,7 @@ urlpatterns = [
     path('activity_update/<int:pk>', ActivityUpdateView.as_view(), name='activity-update'),
     path('shoes/', ShoeListView.as_view(), name='shoe-list'),
     path('shoe_create/', ShoeCreateView.as_view(), name='shoe-create' ),
+    path('shoes/<int:pk>/', ShoeDetailView.as_view(), name='shoe-detail'),
+    path('shoe_delete/<int:pk>/', ShoeDeleteView.as_view(), name='shoe-delete'),
+    path('shoe_update/<int:pk>/', ShoeUpdateView.as_view(), name='shoe-update'),
 ]

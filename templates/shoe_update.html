@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="form-block">
+        <form method="post">
+            {% csrf_token %}
+            <div class="header-block">
+                <div class="main-header">Shoe</div>
+                <div class="button">
+                    <a href="{% url 'shoe-detail' shoe.id%}">Go back to Shoe</a>
+                </div>
+            </div>
+            {{ form.as_p }}
+            <button type="submit" class="save">Save</button>
+        </form>
+    </div>
+
+{% endblock content %}

@@ -48,6 +48,7 @@
             <div class="button">
                 <a href="{% url 'cycle-detail' activity.cycle.id %}">Go to Cycle</a>
             </div>
+        <hr>
         <div class="sub-header">Segments</div>
         <table>
             <thead>
@@ -66,7 +67,20 @@
                     <td>{{ segment.distance  }} mi</td>
                     <td>{{ segment.duration }}</td>
                     <td>{{ segment.pace }}/mi</td>
-                    <td>{{ segment.shoe }}</td>
+                    {% if segment.shoe %}
+                        {% if segment.shoe.nickname %}
+                            <td>
+                                <a href="{% url 'shoe-detail' segment.shoe.id%}">{{ segment.shoe.nickname}}</a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <a href="{% url 'shoe-detail' segment.shoe.id%}">{{ segment.shoe.brand}}
+                                    {{ segment.shoe.model_name }}</a>
+                            </td>
+                        {% endif %}
+                    {% else %}
+                        <td>Update to add shoe</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="stats-block">
+        <div class="main-header">Shoe Details</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nickname</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Mileage</th>
+                    <th>Date Added</th>
+                    <th>Retired?</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ shoe.nickname }}</td>
+                    <td>{{ shoe.brand }}</td>
+                    <td>{{ shoe.model_name }}</td>
+                    <td>{{ shoe.mileage }}</td>
+                    <td>{{ shoe.date_added|date:"m/d/y" }}</td>
+                    <td>
+                        {% if shoe.is_retired %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    </td>
+                    <td></td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'shoe-update' shoe.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'shoe-delete' shoe.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% if shoe.notes %}
+            <div class="text-box">
+            <div class="mini-header">Notes</div>
+            <div>
+                {{ shoe.notes }}
+            </div>
+        </div>
+        {% endif %}
+        <hr>
+        <div class="sub-header">Segment History</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Activity</th>
+                    <th>Type</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Pace</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for segment in shoe.segments.all %}
+                <tr>
+                <td><a href="{% url 'activity-detail' segment.activity.id%}">{{ segment.activity.title }}</a></td>
+                <td>{{ segment.get_type_display }}</td>
+                <td>{{ segment.distance  }} mi</td>
+                <td>{{ segment.duration }}</td>
+                <td>{{ segment.pace }}/mi</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
