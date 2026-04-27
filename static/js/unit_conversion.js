@@ -75,3 +75,29 @@ function toggleKm() {
 
     }
 }
+
+// for convert initial values of update forms
+window.addEventListener('DOMContentLoaded', () => {
+    const currentUnit = localStorage.getItem('unit') || 'mi';
+
+    // convert if km is toggled on
+    if (currentUnit === 'km') {
+        let inputs = document.querySelectorAll('input[name$="-distance"]');
+        inputs.forEach(input => {
+            if (input.value) {
+                let miles = parseFloat(input.value);
+                input.value = (miles * 1.60934).toFixed(2);
+            }
+        });
+
+        // update headers
+        const header = document.getElementById('unit-header')
+        const hiddenInput = document.getElementById('unit_type')
+        if (header) {
+            header.innerText = 'Distance (km)'
+        }
+        if (hiddenInput) {
+            hiddenInput.value = 'km'
+        }
+    }
+});
