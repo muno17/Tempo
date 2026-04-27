@@ -1,10 +1,29 @@
-let toggle = document.getElementById('km_toggle')
+let unitToggle = document.getElementById('km_toggle')
 
-toggle.addEventListener('change', (e) => {
-    if (e.target.checked) {
+function applyUnits(useKm) {
+    unitToggle.checked = useKm
+    if (useKm) {
         toggleKm()
     } else {
         toggleMi()
+    }
+}
+
+unitToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
+        localStorage.setItem('unit','km')
+        applyUnits(true)
+    } else {
+        localStorage.setItem('unit','mi')
+        applyUnits(false)
+    }
+})
+
+window.addEventListener('DOMContentLoaded', () => {
+    let savedUnit = localStorage.getItem('unit')
+
+    if (savedUnit == 'km') {
+        applyUnits(true)
     }
 })
 
