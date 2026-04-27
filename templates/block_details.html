@@ -58,6 +58,7 @@
                 <a href="{% url 'cycle-create' current_block.id %}">+ add Cycle</a>
             </div>
         </div>
+    {% if current_block.cycles.all|length > 0 %}
         <table>
             <thead>
                 <tr>
@@ -92,8 +93,8 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div class="button delete">
-            <a href="{% url 'block-delete' current_block.id %}">Delete Block</a>
-        </div>
+    {% else %}
+        <div class="default-message">No Cycles currently associated with {{ current_block.name }}</div>
+    {% endif %}
     </div>
 {% endblock content %}

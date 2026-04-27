@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="stats-block form-block">
     <form method="post">
     {% csrf_token %}
-    <h1>Activity</h1>
-        <a href="{% url 'activity-detail' activity.id%}">Go back to Activity</a>
+    <div class="header-block">
+        <div class="main-header">Activity</div>
+            <div class="button">
+                <a href="{% url 'activity-detail' activity.id%}">Go back to Activity</a>
+            </div>
+    </div>
     {{ form.as_p }}
 
     <div class="segments-section">
         {{ segments.management_form }}
-        <h2>Segments</h2>
+        <div class="sub-header">Segments</div>
             <table>
                 <thead>
                     <tr>
@@ -34,6 +39,7 @@
                 </tbody>
             </table>
     </div>
-    <button type="submit">Update</button>
+    <button type="submit" class="save">Save</button>
     </form>
+    </div>
 {% endblock content %}

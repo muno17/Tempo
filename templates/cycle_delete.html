@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Are you sure you want to delete this cycle?</h1>
-    <form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-    <a href="{% url 'cycle-list' %}">Cancel and go back</a>
-    </form>
+    <div class="delete-block">
+        <div class="main-header">Are you sure you want to delete this cycle?</div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="delete-house">
+                <button type="submit" class="delete-object">Yes, Delete</button>
+                <div class="button">
+                    <a href="{% url 'cycle-list' %}">Cancel and go back</a>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

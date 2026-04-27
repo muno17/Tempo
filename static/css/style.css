@@ -1,5 +1,5 @@
 body {
-    background-color: #8E90A4;
+    background-color: #DBDBDB;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -38,10 +38,12 @@ header a {
 }
 
 header {
-    background-color:#5F9F89;
+    background-color: #9faaa8;
     margin: 0;
     padding: 10px;
     box-shadow: 1px 1px 1px black;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 a {
@@ -53,8 +55,9 @@ a {
     color: white;
 }
 .main-header {
-    font-size: 50px;
+    font-size: 44px;
     font-weight: bold;
+    margin-bottom: 30px;
 }
 
 #index-top {
@@ -93,8 +96,7 @@ div .alltime-stats {
     gap: 15px;
 }
 
-.stats-block {
-    background-color: #f7fbec;
+.stats-block, .form-block, .delete-block {
     padding-left: 30px;
     padding-right: 30px;
     box-shadow: 1px 1px 3px black;
@@ -103,9 +105,16 @@ div .alltime-stats {
     flex-grow: 1;
 }
 
+.stats-block {
+    background-color: #f7fbec;
+}
+
 .form-block {
     background-color: #A3D4C3;
-    padding-bottom: 15px;
+}
+
+.delete-block {
+    background-color: #EB92A3;
 }
 
 .text-box {
@@ -116,7 +125,7 @@ div .alltime-stats {
     max-width: 500px;
 }
 
-.stats-block, .text-box {
+.stats-block, .text-box, .delete-block, .form-block{
     border-radius: 5px;
     padding-bottom: 20px;
 }
@@ -135,13 +144,24 @@ div .alltime-stats {
     min-width: 60px;
 }
 
+.delete-object {
+    background-color: red;
+    color: white;
+}
+
+.delete-house {
+    display: flex;
+    gap: 50px;
+}
+
 .update {
     background-color: #BC81BF;
     width: 60px;
 }
 
 button {
-    width: 100px;
+    min-width: 100px;
+    font-size: 20px;
 }
 
 .save {

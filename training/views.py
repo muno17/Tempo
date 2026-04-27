@@ -4,7 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Sum
-from .models import Block, Cycle, Activity, Segment
+from .models import Block, Cycle, Activity, Segment, Shoe
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -15,6 +16,7 @@ class IndexView(TemplateView):
 
         context['latest_block'] = Block.objects.order_by('-id').first()
         context['latest_cycle'] = Cycle.objects.order_by('-id').first()
+        context['latest_activities'] = Activity.objects.order_by('-id').all()[:5]
         context['total_miles'] = Segment.objects.aggregate(Sum('distance'))['distance__sum']
         context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
         context['activity_count'] = Activity.objects.count()
@@ -140,8 +142,8 @@ class ActivityDetailView(DetailView):
 # formset is needed to have a nested form for segments within an activity
 SegmentFormSet = inlineformset_factory(
     Activity, Segment,
-    fields=('distance', 'duration', 'type'),
-    extra=3,  # How many empty rows to show by default
+    fields=('distance', 'duration', 'type', 'shoe'),
+    extra=7,  # How many empty rows to show by default
     can_delete=True
 )
 class ActivityCreateView(CreateView):
@@ -276,3 +278,7 @@ class ActivityUpdateView(UpdateView):
             # render form with error messages
             return self.render_to_response(self.get_context_data(form=form))
 
+class ShoeListView(ListView):
+    model = Shoe
+    template = 'shoes.html'
+    context_object_name = 'shoes'

@@ -20,4 +20,5 @@ urlpatterns = [
     path('activity_form/<int:cycle_id>/', ActivityCreateView.as_view(), name='activity-create'),
     path('activity_delete/<int:pk>', ActivityDeleteView.as_view(), name='activity-delete'),
     path('activity_update/<int:pk>', ActivityUpdateView.as_view(), name='activity-update'),
+    path('shoes/', ShoeListView.as_view(), name='shoe-list'),
 ]

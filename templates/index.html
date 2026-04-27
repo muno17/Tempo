@@ -109,7 +109,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for activity in latest_cycle.activities.all %}
+                    {% for activity in latest_activities %}
                     <tr>
                         <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
                         <td>{{ activity.title  }}</td>

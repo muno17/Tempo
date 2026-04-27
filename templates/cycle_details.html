@@ -8,7 +8,7 @@
                 <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
             </div>
         {% else %}
-            <div class="default-message">No Block is currently associated with this Cycle, click edit to associate a Block</div>
+            <div class="default-message">No Block is currently associated with this Cycle, click Update to associate a Block</div>
         {% endif %}
         <table>
             <thead>
@@ -53,7 +53,7 @@
                 <a href="{% url 'activity-create' cycle.id%}">+ add Activity</a>
             </div>
         </div>
-        {% if cycle.activities|length > 0 %}
+        {% if cycle.activities.all|length > 0 %}
             <table>
                 <thead>
                     <tr>
@@ -95,8 +95,5 @@
         {% else %}
         <div class="default-message">No Activities associated with Cycle</div>
         {% endif %}
-        <div class="button delete">
-            <a href="{% url 'cycle-delete' cycle.id%}">Delete Cycle</a>
-        </div>
     </div>
 {% endblock content %}

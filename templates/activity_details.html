@@ -1,66 +1,75 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Activity Details</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Distance</th>
-                <th>Time</th>
-                <th>Pace</th>
-                <th>Perceived Effort</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
-                <td>{{ activity.title  }}</td>
-                <td>{{ activity.mileage }} mi</td>
-                <td>{{ activity.time }}</td>
-                <td>{{ activity.pace }}/mi</td>
-                <td>{{ activity.perceived_effort }}</td>
-            </tr>
-        </tbody>
-    </table>
-    {% if activity.notes %}
-    <div class="text-box">
-        <h3>Notes</h3>
-        <div>
-            {{ activity.notes }}
+    <div class="stats-block">
+        <div class="main-header">Activity Details</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Pace</th>
+                    <th>Perceived Effort</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
+                    <td>{{ activity.title  }}</td>
+                    <td>{{ activity.mileage }} mi</td>
+                    <td>{{ activity.time }}</td>
+                    <td>{{ activity.pace }}/mi</td>
+                    <td>{{ activity.perceived_effort }}</td>
+                    <td></td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'activity-update' activity.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'activity-delete' activity.id %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% if activity.notes %}
+        <div class="text-box">
+            <div class="mini-header">Notes</div>
+            <div>
+                {{ activity.notes }}
+            </div>
         </div>
+        {% endif %}
+            <div class="button">
+                <a href="{% url 'cycle-detail' activity.cycle.id %}">Go to Cycle</a>
+            </div>
+        <div class="sub-header">Segments</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Pace</th>
+                    <th>Shoe</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for segment in activity.segments.all %}
+                <tr>
+                    <td>{{ segment.get_type_display }}</td>
+                    <td>{{ segment.distance  }} mi</td>
+                    <td>{{ segment.duration }}</td>
+                    <td>{{ segment.pace }}/mi</td>
+                    <td>{{ segment.shoe }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    {% endif %}
-        <br>
-        <a href="{% url 'cycle-detail' activity.cycle.id %}">Go to Cycle</a>
-        <br>
-        <br>
-    <h2>Segments</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Distance</th>
-                <th>Time</th>
-                <th>Pace</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for segment in activity.segments.all %}
-            <tr>
-                <td>{{ segment.get_type_display }}</td>
-                <td>{{ segment.distance  }} mi</td>
-                <td>{{ segment.duration }}</td>
-                <td>{{ activity.pace }}/mi</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <br>
-    <a href="{% url 'activity-update' activity.id%}">Update Activity</a>
-    <br>
-    <br>
-    <a href="{% url 'activity-delete' activity.id %}">Delete Activity</a>
 {% endblock content %}

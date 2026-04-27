@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <h1>Activity</h1>
-        {{ form.as_p }}
-
-        <div class="segments-section">
-            {{  segments.management_form }}
-            <h2>Segments</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Distance</th>
-                        <th>Duration</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for s_form in segments %}
+    <div class="stats-block form-block">
+        <form method="post">
+            {% csrf_token %}
+            <div class="main-header">Activity</div>
+            {{ form.as_p }}
+            <hr>
+            <div class="segments-section">
+                {{  segments.management_form }}
+                <div class="sub-header">Segments</div>
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ s_form.distance }}</td>
-                            <td>{{ s_form.duration }}</td>
-                            <td>{{ s_form.type }}</td>
+                            <th>Distance</th>
+                            <th>Duration</th>
+                            <th>Type</th>
+                            <th>Shoe</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <button type="submit">Save</button>
-    </form>
+                    </thead>
+                    <tbody>
+                        {% for s_form in segments %}
+                            <tr>
+                                <td>{{ s_form.distance }}</td>
+                                <td>{{ s_form.duration }}</td>
+                                <td>{{ s_form.type }}</td>
+                                <td>{{ s_form.shoe }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="save">Create</button>
+        </form>
+    </div>
 {% endblock content %}

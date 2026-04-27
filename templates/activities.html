@@ -1,36 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Activities</h1>
-    <a href="{% url 'activity-create' %}">Add Activity</a>
-    <br>
-    <br>
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Title</th>
-            <th>Distance</th>
-            <th>Time</th>
-            <th>Pace</th>
-            <th>Perceived Effort</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for activity in activities %}
-        <tr>
-            <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
-            <td>{{ activity.title  }}</td>
-            <td>{{ activity.mileage }} mi</td>
-            <td>{{ activity.time }}</td>
-            <td>{{ activity.pace }}/mi</td>
-            <td>{{ activity.perceived_effort }}</td>
-            <td><a href="{% url 'activity-update' activity.id%}">Update</a></td>
-            <td><a href="{% url 'activity-delete' activity.id%}">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="stats-block">
+        <div class="header-box">
+            <div class="main-header">Activities</div>
+                <div class="button">
+                    <a href="{% url 'activity-create' %}">+ add Activity</a>
+                </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Pace</th>
+                    <th>Perceived Effort</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                <tr>
+                    <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
+                    <td>{{ activity.title  }}</td>
+                    <td>{{ activity.mileage }} mi</td>
+                    <td>{{ activity.time }}</td>
+                    <td>{{ activity.pace }}/mi</td>
+                    <td>{{ activity.perceived_effort }}</td>
+                    <td></td>
+                    <td>
+                        <div class="button update">
+                            <a href="{% url 'activity-update' activity.id%}">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button delete">
+                            <a href="{% url 'activity-delete' activity.id%}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
