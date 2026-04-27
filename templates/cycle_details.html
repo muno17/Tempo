@@ -30,7 +30,7 @@
                     <td>{{ cycle.start|date:"m/d/Y"  }}</td>
                     <td>{{ cycle.end|date:"m/d/Y"  }}</td>
                     <td>{{ cycle.mileage|as_distance }}</td>
-                    <td>{{ cycle.time }}</td>
+                    <td>{{ cycle.time_display }}</td>
                     <td>{% pace_display cycle.time.total_seconds cycle.mileage cycle.pace %}</td>
                     <td></td>
                     <td></td>
@@ -75,7 +75,7 @@
                         <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
                         <td>{{ activity.title  }}</td>
                         <td>{{ activity.mileage|as_distance }}</td>
-                        <td>{{ activity.time }}</td>
+                        <td>{{ activity.time_display }}</td>
                         <td>{% pace_display activity.time.total_seconds activity.mileage activity.pace %}</td>
                         <td>{{ activity.perceived_effort }}</td>
                         <td></td>

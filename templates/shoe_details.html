@@ -16,6 +16,7 @@
                     <th>Retired?</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,7 +25,7 @@
                     <td>{{ shoe.brand }}</td>
                     <td>{{ shoe.model_name }}</td>
                     <td>{{ shoe.mileage|as_distance }}</td>
-                    <td>{{ shoe.time }}</td>
+                    <td>{{ shoe.time_display }}</td>
                     <td>{{ shoe.date_added|date:"m/d/y" }}</td>
                     <td>
                         {% if shoe.is_retired %}
@@ -72,8 +73,8 @@
                 <tr>
                 <td><a href="{% url 'activity-detail' segment.activity.id%}">{{ segment.activity.title }}</a></td>
                 <td>{{ segment.get_type_display }}</td>
-                <td>{{ segment.distance|as_distance }}</td>
-                <td>{{ segment.duration }}</td>
+                <td>{{ segment.distance_display|as_distance }}</td>
+                <td>{{ segment.time_display }}</td>
                 <td>{% pace_display segment.duration.total_seconds segment.distance segment.pace %}</td>
                 </tr>
             {% endfor %}

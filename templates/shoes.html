@@ -30,7 +30,7 @@
                         <td>{{ shoe.brand }}</td>
                         <td>{{ shoe.model_name }}</td>
                         <td>{{ shoe.mileage|as_distance }}</td>
-                        <td>{{ shoe.time }}</td>
+                        <td>{{ shoe.time_display}}</td>
                         <td>{{ shoe.date_added|date:"m/d/y" }}</td>
                         <td>
                         {% if shoe.is_retired %}

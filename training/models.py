@@ -63,6 +63,22 @@ class Shoe(models.Model):
 
         return shoe_time + self.init_duration
 
+    @property
+    def time_display(self):
+        """Returns the total time spent running for the activity in a user friendly format"""
+        duration = self.time
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
+
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
+
 
 class Block(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -308,7 +324,6 @@ class Segment(models.Model):
     def __str__(self):
         return f'{self.distance} {self.duration} {self.type}'
 
-
     @property
     def shoe_used(self):
         """Returns the segment's shoe or the activity's default"""
@@ -346,3 +361,8 @@ class Segment(models.Model):
         if hours > 0:
             return f"{hours}:{minutes:02d}:{seconds:02d}"
         return f"{minutes}:{seconds:02d}"
+
+    @property
+    def distance_display(self):
+        """Returns the distance formatted to 2 decimal places"""
+        return f"{self.distance:.2f}"

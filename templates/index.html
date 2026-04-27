@@ -34,7 +34,7 @@
                         <td>{{ latest_block.start|date:"m/d/Y"  }}</td>
                         <td>{{ latest_block.end|date:"m/d/Y"  }}</td>
                         <td>{{ latest_block.mileage|as_distance}}</td>
-                        <td>{{ latest_block.time }}</td>
+                        <td>{{ latest_block.time_display }}</td>
                         <td>{% pace_display latest_block.time.total_seconds latest_block.mileage latest_block.pace %}
                         </td>
                         <td></td>
@@ -76,7 +76,7 @@
                         <td>{{ latest_cycle.start|date:"m/d/Y"  }}</td>
                         <td>{{ latest_cycle.end|date:"m/d/Y"  }}</td>
                         <td>{{ latest_cycle.mileage|as_distance}} </td>
-                        <td>{{ latest_cycle.time }}</td>
+                        <td>{{ latest_cycle.time_display }}</td>
                         <td>{% pace_display latest_cycle.time.total_seconds latest_cycle.mileage latest_cycle.pace %}</td>
                         <td></td>
                         <td></td>
@@ -116,7 +116,7 @@
                         <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
                         <td>{{ activity.title  }}</td>
                         <td>{{ activity.mileage|as_distance }}</td>
-                        <td>{{ activity.time }}</td>
+                        <td>{{ activity.time_display }}</td>
                         <td>{% pace_display activity.time.total_seconds activity.mileage activity.pace %}</td>
                         <td></td>
                         <td></td>

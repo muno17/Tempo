@@ -31,7 +31,7 @@
                         <td>{{ block.start|date:"m/d/Y"  }}</td>
                         <td>{{ block.end|date:"m/d/Y"  }}</td>
                         <td>{{ block.mileage|as_distance }}</td>
-                        <td>{{ block.time }}</td>
+                        <td>{{ block.time_display }}</td>
                         <td>{% pace_display block.time.total_seconds block.mileage block.pace %}</td>
                         <td></td>
                         <td>

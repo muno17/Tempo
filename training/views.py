@@ -17,7 +17,7 @@ class IndexView(TemplateView):
         context['latest_block'] = Block.objects.order_by('-id').first()
         context['latest_cycle'] = Cycle.objects.order_by('-id').first()
         context['latest_activities'] = Activity.objects.order_by('-id').all()[:5]
-        context['total_miles'] = Segment.objects.aggregate(Sum('distance'))['distance__sum']
+        context['total_miles'] = round(Segment.objects.aggregate(Sum('distance'))['distance__sum'],2)
         context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
         context['activity_count'] = Activity.objects.count()
         # longest run
@@ -145,6 +145,12 @@ SegmentFormSet = inlineformset_factory(
     fields=('distance', 'duration', 'type', 'shoe'),
     extra=7,  # How many empty rows to show by default
     can_delete=True,
+    widgets={
+        'duration': TextInput(attrs={
+            'placeholder': 'hh:mm:ss',
+            'class': 'form-control', # or whatever CSS class you use
+            'style': 'width: 100px;'
+        })},
 )
 class ActivityCreateView(CreateView):
     model = Activity

@@ -65,7 +65,7 @@
                 {% for segment in activity.segments.all %}
                 <tr>
                     <td>{{ segment.get_type_display }}</td>
-                    <td>{{ segment.distance|as_distance }}</td>
+                    <td>{{ segment.distance_display|as_distance }}</td>
                     <td>{{ segment.time_display }}</td>
                     <td>{% pace_display segment.duration.total_seconds segment.distance segment.pace %}</td>
                     {% if segment.shoe %}

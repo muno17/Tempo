@@ -21,7 +21,7 @@
                     <td>{{ current_block.start|date:"m/d/Y"  }}</td>
                     <td>{{ current_block.end|date:"m/d/Y"  }}</td>
                     <td>{{ current_block.mileage|as_distance }}</td>
-                    <td>{{ current_block.time }}</td>
+                    <td>{{ current_block.time_display }}</td>
                     <td>{% pace_display current_block.time.total_seconds current_block.mileage current_block.pace %}</td>
                     <td>
                         <div class="button update">
@@ -78,7 +78,7 @@
                     <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
                     <td>{{ cycle.end|date:"m/d/Y"  }}</td>
                     <td>{{ cycle.mileage|as_distance }}</td>
-                    <td>{{ cycle.time }}</td>
+                    <td>{{ cycle.time_display }}</td>
                     <td>{% pace_display cycle.time.total_seconds cycle.mileage cycle.pace %}</td>
                     <td>
                         <div class="button update">
