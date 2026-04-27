@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load unit_tags %}
 
 {% block content %}
     <div class="stats-block">
@@ -19,9 +20,9 @@
                 <tr>
                     <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
                     <td>{{ activity.title  }}</td>
-                    <td>{{ activity.mileage }} mi</td>
+                    <td>{{ activity.mileage|as_distance }}</td>
                     <td>{{ activity.time }}</td>
-                    <td>{{ activity.pace }}/mi</td>
+                    <td>{% pace_display activity.time.total_seconds activity.mileage activity.pace %}</td>
                     <td>{{ activity.perceived_effort }}</td>
                     <td></td>
                     <td>
@@ -64,9 +65,9 @@
                 {% for segment in activity.segments.all %}
                 <tr>
                     <td>{{ segment.get_type_display }}</td>
-                    <td>{{ segment.distance  }} mi</td>
+                    <td>{{ segment.distance|as_distance }}</td>
                     <td>{{ segment.duration }}</td>
-                    <td>{{ segment.pace }}/mi</td>
+                    <td>{% pace_display segment.duration.total_seconds segment.distance segment.pace %}</td>
                     {% if segment.shoe %}
                         {% if segment.shoe.nickname %}
                             <td>

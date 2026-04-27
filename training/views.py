@@ -289,7 +289,7 @@ class ShoeCreateView(CreateView):
     model = Shoe
     template_name = 'shoe_create.html'
     context_object_name = 'shoe'
-    fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'is_retired', 'notes']
+    fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'init_duration', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
 
 
