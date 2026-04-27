@@ -28,7 +28,7 @@
                         <td><a href="{% url 'shoe-detail' shoe.id %}">{{ shoe.nickname }}</a></td>
                         <td>{{ shoe.brand }}</td>
                         <td>{{ shoe.model_name }}</td>
-                        <td>{{ shoe.mileage }}</td>
+                        <td>{{ shoe.mileage }} mi</td>
                         <td>{{ shoe.date_added|date:"m/d/y" }}</td>
                         <td>
                         {% if shoe.is_retired %}

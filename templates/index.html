@@ -5,7 +5,9 @@
     <div class="stats-block">
     <div class="main-header" id="index-top">All-time Stats</div>
     <div class="alltime-stats">
-        <div>Total Miles: {{ total_miles }} mi</div>
+        <div>Total Miles:
+            <span class="distance" data-mi="{{ total_miles }}">{{ total_miles }}</span>
+            <span class="distance-label">mi</span></div>
         <div>Total Time: {{ total_duration }} Hours</div>
         <div>Total Activities: {{ activity_count }}</div>
     </div>
@@ -32,9 +34,18 @@
                         <td><a href="{% url 'block-detail' latest_block.id  %}">{{ latest_block.name }}</a></td>
                         <td>{{ latest_block.start|date:"m/d/Y"  }}</td>
                         <td>{{ latest_block.end|date:"m/d/Y"  }}</td>
-                        <td>{{ latest_block.mileage }} mi</td>
+                        <td>
+                            <span class="distance" data-mi="{{ latest_block.mileage }}">{{ latest_block.mileage }}</span>
+                            <span class="distance-label">mi</span></td>
                         <td>{{ latest_block.time }}</td>
-                        <td>{{ latest_block.pace }}/mi</td>
+                        <td>
+                            <span class="pace"
+                                  data-seconds="{{ latest_block.time.total_seconds }}"
+                                  data-mi-pace="{{ latest_block.pace }}"
+                                  data-mi="{{ latest_block.mileage }}">
+                                {{ latest_block.pace }}</span>
+                            /<span class="distance-label">mi</span>
+                        </td>
                         <td></td>
                         <td>
                             <div class="button update">

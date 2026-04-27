@@ -18,13 +18,14 @@
         <a href="/activities/">Activities</a>
         <a href="/shoes/">Shoes</a>
         <label class="switch">
-            <input type="checkbox">
-            <span class="slider"></span>
+            <input type="checkbox" id="km_toggle">
+            <span class="slider">km</span>
         </label>
     </header>
     <div id="block-content">
         {% block content %}
         {% endblock %}
     </div>
+    <script src="{% static 'js/unit_conversion.js' %}"></script>
 </body>
 </html>
