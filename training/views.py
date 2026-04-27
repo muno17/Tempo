@@ -167,7 +167,7 @@ class ActivityCreateView(CreateView):
         return initial
 
     def get_form(self):
-        """Have the form render the timestamp as a date-picker and time field"""
+        """Have the form render the timestamp as a date-picker and time field."""
         form = super().get_form()
         # SplitDateTimeWidget separates the datetime so we can have two separate fields
         # SplitDateTimeField joins the date and time fields into a single datetime object

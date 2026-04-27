@@ -33,7 +33,13 @@ class Shoe(models.Model):
     notes = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.brand} {self.model_name} {self.nickname}'
+        if self.nickname:
+            return f'{self.nickname}'
+        return f'{self.brand} {self.model_name}'
+
+    # set shoe to always be ordered by newest to oldest
+    class Meta:
+        ordering = ['-date_added']
 
     @property
     def mileage(self):

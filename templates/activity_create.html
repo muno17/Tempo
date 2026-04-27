@@ -20,12 +20,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for s_form in segments %}
+                        {% for segment in segments %}
                             <tr>
-                                <td>{{ s_form.distance }}</td>
-                                <td>{{ s_form.duration }}</td>
-                                <td>{{ s_form.type }}</td>
-                                <td>{{ s_form.shoe }}</td>
+                                <td>{{ segment.distance }}</td>
+                                <td>{{ segment.duration }}</td>
+                                <td>{{ segment.type }}</td>
+                                <td>{{ segment.shoe }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
