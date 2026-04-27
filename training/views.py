@@ -3,7 +3,7 @@ from django.forms import inlineformset_factory, NumberInput, TextInput, DateInpu
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
-from django.db.models import Sum
+from django.db.models import Sum, Max
 from .models import Block, Cycle, Activity, Segment, Shoe
 
 
@@ -20,8 +20,13 @@ class IndexView(TemplateView):
         context['total_miles'] = round(Segment.objects.aggregate(Sum('distance'))['distance__sum'],2)
         context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
         context['activity_count'] = Activity.objects.count()
-        # longest run
-        # average overall pace
+        context['longest_run'] = round(Activity.objects.annotate(
+            total_miles=Sum('segments__distance')
+        ).aggregate(Max('total_miles'))['total_miles__max'] or 0.0, 2)
+        context['longest_duration'] = Activity.objects.annotate(
+            total_duration=Sum('segments__duration')
+        ).aggregate(Max('total_duration'))['total_duration__max'] or 0.0
+
         return context
 
 

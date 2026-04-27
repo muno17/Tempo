@@ -9,6 +9,8 @@
         <div>Total Miles: {{ total_miles|as_distance }}</div>
         <div>Total Time: {{ total_duration }} Hours</div>
         <div>Total Activities: {{ activity_count }}</div>
+        <div>Longest Activity Distance: {{ longest_run|as_distance }} </div>
+        <div>Longest Activity Duration: {{ longest_duration }} </div>
     </div>
     {% if latest_block %}
         <hr>
