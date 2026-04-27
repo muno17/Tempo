@@ -30,6 +30,7 @@ class Shoe(models.Model):
     date_added = models.DateField(auto_now_add=True)
     is_retired = models.BooleanField(default=False)
     init_mileage = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    init_duration = models.DurationField(default=timedelta(0))
     notes = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -44,12 +45,23 @@ class Shoe(models.Model):
     @property
     def mileage(self):
         """Returns the total mileage of the shoe"""
-        activity_miles = Segment.objects.filter(
-            # Q lets us run an 'or' operation on a query
-            models.Q(shoe=self) | models.Q(shoe__isnull=True, activity__default_shoe=self)
-        ).aggregate(total=models.Sum('distance'))['total'] or 0
+        shoe_miles = self.segments.aggregate(
+            total=models.Sum('distance')
+        )['total'] or 0
 
-        return float(self.init_mileage) + float(activity_miles)
+        return float(self.init_mileage) + float(shoe_miles)
+
+    @property
+    def time(self):
+        """Returns the total time spent running for the shoe"""
+        shoe_time = self.segments.aggregate(
+            total=models.Sum('duration')
+        )['total'] or 0
+
+        if not shoe_time:
+            return timedelta(0)
+
+        return shoe_time + self.init_duration
 
 
 class Block(models.Model):

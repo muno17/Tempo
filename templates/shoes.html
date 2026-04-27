@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load unit_tags %}
 
 {% block content %}
     <div class="stats-block">
@@ -15,9 +16,9 @@
                     <th>Brand</th>
                     <th>Model</th>
                     <th>Mileage</th>
+                    <th>Total Time</th>
                     <th>Date Added</th>
                     <th>Retired?</th>
-                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -28,7 +29,8 @@
                         <td><a href="{% url 'shoe-detail' shoe.id %}">{{ shoe.nickname }}</a></td>
                         <td>{{ shoe.brand }}</td>
                         <td>{{ shoe.model_name }}</td>
-                        <td>{{ shoe.mileage }} mi</td>
+                        <td>{{ shoe.mileage|as_distance }}</td>
+                        <td>{{ shoe.time }}</td>
                         <td>{{ shoe.date_added|date:"m/d/y" }}</td>
                         <td>
                         {% if shoe.is_retired %}

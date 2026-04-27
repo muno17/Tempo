@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load unit_tags %}
 
 {% block content %}
     <div class="stats-block">
@@ -29,9 +30,9 @@
                         <td><a href="{% url 'block-detail' block.id  %}">{{ block.name }}</a></td>
                         <td>{{ block.start|date:"m/d/Y"  }}</td>
                         <td>{{ block.end|date:"m/d/Y"  }}</td>
-                        <td>{{ block.mileage }} mi</td>
+                        <td>{{ block.mileage|as_distance }}</td>
                         <td>{{ block.time }}</td>
-                        <td>{{ block.pace }}/mi</td>
+                        <td>{% pace_display block.time.total_seconds block.mileage block.pace %}</td>
                         <td></td>
                         <td>
                             <div class="button update">

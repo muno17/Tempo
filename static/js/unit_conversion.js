@@ -41,10 +41,15 @@ function toggleKm() {
     }
 
     for (let duration of durations) {
-        let distance = (parseFloat(duration.dataset.mi) * 1.60934).toFixed(2)
         let totalSeconds = duration.dataset.seconds
-        let minutes = parseInt((totalSeconds / distance) / 60)
-        let seconds = parseInt((totalSeconds /distance) % 60)
-        duration.innerHTML = `${minutes}:${seconds}`
+        if (totalSeconds > 0) {
+            let distance = (parseFloat(duration.dataset.mi) * 1.60934).toFixed(2)
+            let minutes = parseInt((totalSeconds / distance) / 60)
+            let seconds = parseInt((totalSeconds /distance) % 60)
+            duration.innerHTML = `${minutes}:${seconds}`
+        } else {
+            duration.innerHTML = "0:00"
+        }
+
     }
 }
