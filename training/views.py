@@ -39,7 +39,7 @@ class BlockDetailView(DetailView):
 class BlockCreateView(CreateView):
     model = Block
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
-    template_name = 'block_form.html'
+    template_name = 'block_create.html'
     success_url = reverse_lazy('block-list')
 
     def form_valid(self, form):
@@ -89,7 +89,7 @@ class CycleDeleteView(DeleteView):
 class CycleCreateView(CreateView):
     model = Cycle
     fields = ['block', 'start', 'end']
-    template_name = 'cycle_form.html'
+    template_name = 'cycle_create.html'
     success_url = reverse_lazy('cycle-list')
 
     def get_initial(self):
@@ -149,7 +149,7 @@ SegmentFormSet = inlineformset_factory(
 class ActivityCreateView(CreateView):
     model = Activity
     fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
-    template_name = 'activity_form.html'
+    template_name = 'activity_create.html'
     success_url = reverse_lazy('activity-list')
 
     def get_initial(self):
@@ -280,5 +280,14 @@ class ActivityUpdateView(UpdateView):
 
 class ShoeListView(ListView):
     model = Shoe
-    template = 'shoes.html'
+    template_name = 'shoes.html'
     context_object_name = 'shoes'
+    ordering = ['-date_added']
+
+
+class ShoeCreateView(CreateView):
+    model = Shoe
+    template_name = 'shoe_create.html'
+    context_object_name = 'shoe'
+    fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'is_retired', 'notes']
+    success_url = reverse_lazy('shoe-list')

@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="stats-block">
+        <div class="header-box">
+            <div class="main-header">Shoes</div>
+            <div class="button">
+                <a href="">+ add Shoe</a>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nickname</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Mileage</th>
+                    <th>Date Added</th>
+                    <th>Retired?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shoe in shoes %}
+                    <tr>
+                        <td>{{ shoe.nickname }}</td>
+                        <td>{{ shoe.brand }}</td>
+                        <td>{{ shoe.model_name }}</td>
+                        <td>{{ shoe.mileage }}</td>
+                        <td>{{ shoe.date_added|date:"m/d/y" }}</td>
+                        <td>{{ shoe.is_retired }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock content %}

@@ -30,6 +30,7 @@ class Shoe(models.Model):
     date_added = models.DateField(auto_now_add=True)
     is_retired = models.BooleanField(default=False)
     init_mileage = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    notes = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.brand} {self.model_name} {self.nickname}'
