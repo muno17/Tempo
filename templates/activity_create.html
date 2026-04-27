@@ -6,6 +6,7 @@
             {% csrf_token %}
             <div class="main-header">Activity</div>
             {{ form.as_p }}
+            <input type="hidden" name="unit_type" id="unit_type" value="mi">
             <hr>
             <div class="segments-section">
                 {{  segments.management_form }}
@@ -13,7 +14,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Distance</th>
+                            <th id="unit-header">Distance</th>
                             <th>Duration</th>
                             <th>Type</th>
                             <th>Shoe</th>
@@ -34,4 +35,15 @@
             <button type="submit" class="save">Create</button>
         </form>
     </div>
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const unitPref = localStorage.getItem('unit') || 'mi';
+        document.getElementById('unit-header').innerText = `Distance (${unitPref})`;
+    });
+
+    document.querySelector('form').addEventListener('submit', function() {
+        const unitPref = localStorage.getItem('unit') || 'mi';
+        document.getElementById('unit_type').value = unitPref;
+    });
+    </script>
 {% endblock content %}

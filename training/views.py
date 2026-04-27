@@ -193,7 +193,6 @@ class ActivityCreateView(CreateView):
     def form_valid(self, form):
         """Links the Activity to the segments and saves the activity and segments"""
         super_user = User.objects.first()
-
         form.instance.user = super_user
         self.object = form.save()
 
@@ -201,6 +200,9 @@ class ActivityCreateView(CreateView):
         segments = context['segments']
 
         if segments.is_valid():
+            # check the unit preference
+            unit_type = self.request.POST.get('unit_type', 'mi')
+            print(f"Received unit is: {unit_type}")
             # create the segments objects but don't save since we still need to update each one
             seg_instances = segments.save(commit=False)
 
@@ -208,6 +210,11 @@ class ActivityCreateView(CreateView):
             for instance in seg_instances:
                 instance.user = super_user
                 instance.activity = self.object
+
+                # conver distance if the user input in km
+                if unit_type == 'km':
+                    instance.distance = float(instance.distance) / 1.60934
+
                 instance.save()
 
             return redirect(self.success_url)

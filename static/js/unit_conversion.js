@@ -22,7 +22,7 @@ unitToggle.addEventListener('change', (e) => {
 window.addEventListener('DOMContentLoaded', () => {
     let savedUnit = localStorage.getItem('unit')
 
-    if (savedUnit == 'km') {
+    if (savedUnit === 'km') {
         applyUnits(true)
     }
 })
@@ -52,8 +52,9 @@ function toggleKm() {
     let durations = document.querySelectorAll('.pace')
 
     for (let dist of distance) {
-        dist.innerHTML = (parseFloat(dist.dataset.mi) * 1.60934).toFixed(2)
-    }
+        let miles = parseFloat(dist.dataset.mi);
+        let km = Math.round((miles * 1.60934) * 100) / 100;
+        dist.innerHTML = km.toFixed(2);    }
 
     for (let label of labels) {
         label.innerHTML = 'km'

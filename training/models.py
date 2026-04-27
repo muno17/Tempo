@@ -257,7 +257,7 @@ class Segment(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True,
                                  related_name='segments')
     shoe = models.ForeignKey(Shoe, on_delete=models.SET_NULL, null=True, blank=True, related_name='segments')
-    distance = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    distance = models.DecimalField(max_digits=10, decimal_places=5, default=0.0)
     duration = models.DurationField()
     RUN_TYPES = [
         ("EASY", "Easy"),
