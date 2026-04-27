@@ -3,40 +3,51 @@
 {% block content %}
     <div class="form-block">
         <form method="post">
-        {% csrf_token %}
-            <div class="main-header">Activity</div>
-        {{ form.as_p }}
-
-        <div class="segments-section">
-            {{ segments.management_form }}
-            <div class="sub-header">Segments</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Distance</th>
-                            <th>Duration</th>
-                            <th>Type</th>
-                            <th>Shoe</th>
-                            <th>Delete?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for s_form in segments %}
+            {% csrf_token %}
+                <div class="main-header">Activity</div>
+            {{ form.as_p }}
+            <input type="hidden" name="unit_type" id="unit_type" value="mi">
+            <div class="segments-section">
+                {{ segments.management_form }}
+                <div class="sub-header">Segments</div>
+                    <table>
+                        <thead>
                             <tr>
-                                {% for hidden in s_form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                                <td>{{ s_form.distance }}</td>
-                                <td>{{ s_form.duration }}</td>
-                                <td>{{ s_form.type }}</td>
-                                <td>{{ s_form.shoe }}</td>
-                                <td>{{ s_form.DELETE }}</td>
+                                <th id="unit-header">Distance</th>
+                                <th>Duration</th>
+                                <th>Type</th>
+                                <th>Shoe</th>
+                                <th>Delete?</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-        </div>
-        <button type="submit" class="save">Save</button>
+                        </thead>
+                        <tbody>
+                            {% for s_form in segments %}
+                                <tr>
+                                    {% for hidden in s_form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <td>{{ s_form.distance }}</td>
+                                    <td>{{ s_form.duration }}</td>
+                                    <td>{{ s_form.type }}</td>
+                                    <td>{{ s_form.shoe }}</td>
+                                    <td>{{ s_form.DELETE }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+            <button type="submit" class="save">Save</button>
         </form>
     </div>
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const unitPref = localStorage.getItem('unit') || 'mi'
+        document.getElementById('unit-header').innerText = `Distance (${unitPref})`
+    })
+
+    document.querySelector('form').addEventListener('submit', function() {
+        const unitPref = localStorage.getItem('unit') || 'mi'
+        document.getElementById('unit_type').value = unitPref
+    })
+    </script>
 {% endblock content %}

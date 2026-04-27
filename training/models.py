@@ -92,6 +92,10 @@ class Block(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    # order by latest added
+    class Meta:
+        ordering = ['-start']
+
     @cached_property
     def mileage(self):
         """Returns the total mileage of the block"""
@@ -159,6 +163,10 @@ class Cycle(models.Model):
 
     def __str__(self):
         return f'{self.start} {self.end}'
+
+    # order by latest added
+    class Meta:
+        ordering = ['-start']
 
     @cached_property
     def mileage(self):
@@ -237,6 +245,10 @@ class Activity(models.Model):
 
     def __str__(self):
         return f'{self.title} {self.timestamp}'
+
+    # order by latest added
+    class Meta:
+        ordering = ['-timestamp']
 
     @cached_property
     def mileage(self):

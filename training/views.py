@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import inlineformset_factory, TextInput, DateInput, SplitDateTimeWidget, SplitDateTimeField, TimeInput
+from django.forms import inlineformset_factory, NumberInput, TextInput, DateInput, SplitDateTimeWidget, SplitDateTimeField, TimeInput
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
@@ -150,7 +150,12 @@ SegmentFormSet = inlineformset_factory(
             'placeholder': 'hh:mm:ss',
             'class': 'form-control', # or whatever CSS class you use
             'style': 'width: 100px;'
-        })},
+        }),
+        'distance': NumberInput(attrs={
+            'step': '0.00001',  # Tells the browser and Django to allow high precision
+            'class': 'form-control',
+        }),
+    },
 )
 class ActivityCreateView(CreateView):
     model = Activity
@@ -208,7 +213,7 @@ class ActivityCreateView(CreateView):
         if segments.is_valid():
             # check the unit preference
             unit_type = self.request.POST.get('unit_type', 'mi')
-            print(f"Received unit is: {unit_type}")
+
             # create the segments objects but don't save since we still need to update each one
             seg_instances = segments.save(commit=False)
 
@@ -274,6 +279,9 @@ class ActivityUpdateView(UpdateView):
         self.object = form.save()
 
         if segments.is_valid():
+            # check the unit preference
+            unit_type = self.request.POST.get('unit_type', 'mi')
+
             # create/delete the segments objects but don't save since we still need to update each one
             seg_instances = segments.save(commit=False)
 
@@ -284,6 +292,11 @@ class ActivityUpdateView(UpdateView):
             for instance in seg_instances:
                 instance.user = super_user
                 instance.activity = self.object
+
+                # conver distance if the user input in km
+                if unit_type == 'km':
+                    instance.distance = float(instance.distance) / 1.60934
+
                 instance.save()
 
             return super().form_valid(form)

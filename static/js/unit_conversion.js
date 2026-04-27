@@ -19,6 +19,7 @@ unitToggle.addEventListener('change', (e) => {
     }
 })
 
+// load the localStorage item if there is one
 window.addEventListener('DOMContentLoaded', () => {
     let savedUnit = localStorage.getItem('unit')
 
@@ -52,9 +53,10 @@ function toggleKm() {
     let durations = document.querySelectorAll('.pace')
 
     for (let dist of distance) {
-        let miles = parseFloat(dist.dataset.mi);
-        let km = Math.round((miles * 1.60934) * 100) / 100;
-        dist.innerHTML = km.toFixed(2);    }
+        let miles = parseFloat(dist.dataset.mi)
+        let km = miles * 1.60934
+        dist.innerHTML = km.toFixed(2)
+    }
 
     for (let label of labels) {
         label.innerHTML = 'km'
@@ -63,7 +65,7 @@ function toggleKm() {
     for (let duration of durations) {
         let totalSeconds = duration.dataset.seconds
         if (totalSeconds > 0) {
-            let distance = (parseFloat(duration.dataset.mi) * 1.60934).toFixed(2)
+            let distance = (parseFloat(duration.dataset.mi) * 1.60934)
             let minutes = parseInt((totalSeconds / distance) / 60)
             let seconds = parseInt((totalSeconds /distance) % 60)
             duration.innerHTML = `${minutes}:${seconds}`

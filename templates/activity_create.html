@@ -36,14 +36,14 @@
         </form>
     </div>
     <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const unitPref = localStorage.getItem('unit') || 'mi';
-        document.getElementById('unit-header').innerText = `Distance (${unitPref})`;
-    });
+        window.addEventListener('DOMContentLoaded', () => {
+            const unitPref = localStorage.getItem('unit') || 'mi'
+            document.getElementById('unit-header').innerText = `Distance (${unitPref})`
+        })
 
-    document.querySelector('form').addEventListener('submit', function() {
-        const unitPref = localStorage.getItem('unit') || 'mi';
-        document.getElementById('unit_type').value = unitPref;
-    });
+        document.querySelector('form').addEventListener('submit', function() {
+            const unitPref = localStorage.getItem('unit') || 'mi'
+            document.getElementById('unit_type').value = unitPref
+        })
     </script>
 {% endblock content %}
