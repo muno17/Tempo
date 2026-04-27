@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
+{% load unit_tags %}
 
 
 {% block content %}
     <div class="stats-block">
     <div class="main-header" id="index-top">All-time Stats</div>
     <div class="alltime-stats">
-        <div>Total Miles:
-            <span class="distance" data-mi="{{ total_miles }}">{{ total_miles }}</span>
-            <span class="distance-label">mi</span></div>
+        <div>Total Miles: {{ total_miles|as_distance }}</div>
         <div>Total Time: {{ total_duration }} Hours</div>
         <div>Total Activities: {{ activity_count }}</div>
     </div>
@@ -34,17 +33,9 @@
                         <td><a href="{% url 'block-detail' latest_block.id  %}">{{ latest_block.name }}</a></td>
                         <td>{{ latest_block.start|date:"m/d/Y"  }}</td>
                         <td>{{ latest_block.end|date:"m/d/Y"  }}</td>
-                        <td>
-                            <span class="distance" data-mi="{{ latest_block.mileage }}">{{ latest_block.mileage }}</span>
-                            <span class="distance-label">mi</span></td>
+                        <td>{{ latest_block.mileage|as_distance}}</td>
                         <td>{{ latest_block.time }}</td>
-                        <td>
-                            <span class="pace"
-                                  data-seconds="{{ latest_block.time.total_seconds }}"
-                                  data-mi-pace="{{ latest_block.pace }}"
-                                  data-mi="{{ latest_block.mileage }}">
-                                {{ latest_block.pace }}</span>
-                            /<span class="distance-label">mi</span>
+                        <td>{% pace_display latest_block.time.total_seconds latest_block.mileage latest_block.pace %}
                         </td>
                         <td></td>
                         <td>
@@ -84,9 +75,9 @@
                     <tr>
                         <td>{{ latest_cycle.start|date:"m/d/Y"  }}</td>
                         <td>{{ latest_cycle.end|date:"m/d/Y"  }}</td>
-                        <td>{{ latest_cycle.mileage }} mi</td>
+                        <td>{{ latest_cycle.mileage|as_distance}} </td>
                         <td>{{ latest_cycle.time }}</td>
-                        <td>{{ latest_cycle.pace }}/mi</td>
+                        <td>{% pace_display latest_cycle.time.total_seconds latest_cycle.mileage latest_cycle.pace %}</td>
                         <td></td>
                         <td></td>
                         <td>
@@ -124,9 +115,9 @@
                     <tr>
                         <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
                         <td>{{ activity.title  }}</td>
-                        <td>{{ activity.mileage }} mi</td>
+                        <td>{{ activity.mileage|as_distance }}</td>
                         <td>{{ activity.time }}</td>
-                        <td>{{ activity.pace }}/mi</td>
+                        <td>{% pace_display activity.time.total_seconds activity.mileage activity.pace %}</td>
                         <td></td>
                         <td></td>
                         <td>

@@ -14,7 +14,7 @@ function toggleMi() {
     let durations = document.querySelectorAll('.pace')
 
     for (let dist of distance) {
-        dist.innerHTML = parseFloat(dist.dataset.mi)
+        dist.innerHTML = (parseFloat(dist.dataset.mi)).toFixed(2)
     }
 
     for (let label of labels) {
