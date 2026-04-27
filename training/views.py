@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import inlineformset_factory, DateInput, SplitDateTimeWidget, SplitDateTimeField
+from django.forms import inlineformset_factory, TextInput, DateInput, SplitDateTimeWidget, SplitDateTimeField, TimeInput
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
@@ -144,7 +144,7 @@ SegmentFormSet = inlineformset_factory(
     Activity, Segment,
     fields=('distance', 'duration', 'type', 'shoe'),
     extra=7,  # How many empty rows to show by default
-    can_delete=True
+    can_delete=True,
 )
 class ActivityCreateView(CreateView):
     model = Activity

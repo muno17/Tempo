@@ -49,7 +49,7 @@ class Shoe(models.Model):
             total=models.Sum('distance')
         )['total'] or 0
 
-        return float(self.init_mileage) + float(shoe_miles)
+        return float(self.init_mileage) + float(f"{shoe_miles:.2f}")
 
     @property
     def time(self):
@@ -83,7 +83,7 @@ class Block(models.Model):
             total=models.Sum('activities__segments__distance')
         )['total'] or 0
 
-        return float(block_miles)
+        return float(f"{block_miles:.2f}")
 
     @cached_property
     def time(self):
@@ -100,8 +100,18 @@ class Block(models.Model):
     @property
     def time_display(self):
         """Returns the total time spent running for the block in a user friendly format"""
-        time = self.time
-        return str(time).split('.')[0]
+        duration = self.time
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
+
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
 
     time_display.fget.short_description = 'Total Time'
 
@@ -141,7 +151,7 @@ class Cycle(models.Model):
             total=models.Sum('segments__distance')
         )['total'] or 0
 
-        return float(cycle_miles)
+        return float(f"{cycle_miles:.2f}")
 
     @cached_property
     def time(self):
@@ -158,8 +168,18 @@ class Cycle(models.Model):
     @property
     def time_display(self):
         """Returns the total time spent running for the cycle in a user friendly format"""
-        time = self.time
-        return str(time).split('.')[0]
+        duration = self.time
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
+
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
 
     time_display.fget.short_description = 'Total Time'
 
@@ -209,7 +229,7 @@ class Activity(models.Model):
             total=models.Sum('distance')
         )['total'] or 0
 
-        return float(activity_miles)
+        return float(f"{activity_miles:.2f}")
 
     @cached_property
     def time(self):
@@ -226,8 +246,18 @@ class Activity(models.Model):
     @property
     def time_display(self):
         """Returns the total time spent running for the activity in a user friendly format"""
-        time = self.time
-        return str(time).split('.')[0]
+        duration = self.time
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
+
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
 
     time_display.fget.short_description = 'Time'
 
@@ -300,3 +330,19 @@ class Segment(models.Model):
         minutes = int(seconds_per_mile // 60)
         seconds = int(seconds_per_mile % 60)
         return f'{minutes}:{seconds:02d}'
+
+    @property
+    def time_display(self):
+        """Returns the total time spent running for the activity in a user friendly format"""
+        duration = self.duration
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
+
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
