@@ -291,3 +291,8 @@ class ShoeCreateView(CreateView):
     context_object_name = 'shoe'
     fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
+
+    #def get_initial(self):
+    #    initial = super.get_initial()
+    #    initial['init_mileage'] = 0
+    #    return initial

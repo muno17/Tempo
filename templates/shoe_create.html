@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="form-block">
+        <form method="post">
+            {% csrf_token %}
+            <div class="main-header">Shoe</div>
+            {{ form.as_p }}
+            <button type="submit" class="save">Create</button>
+        </form>
+    </div>
+{% endblock content %}
