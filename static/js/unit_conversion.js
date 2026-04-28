@@ -1,82 +1,76 @@
 let unitToggle = document.getElementById('km_toggle')
 
 function applyUnits(useKm) {
-    unitToggle.checked = useKm
+    unitToggle.checked = useKm;
+    let distance = document.querySelectorAll('.distance');
+    let labels = document.querySelectorAll('.distance-label');
+    let durations = document.querySelectorAll('.pace');
+
     if (useKm) {
-        toggleKm()
+        toggleKm(distance, labels, durations);
     } else {
-        toggleMi()
+        toggleMi(distance, labels, durations);
     }
 }
 
 unitToggle.addEventListener('change', (e) => {
     if (e.target.checked) {
-        localStorage.setItem('unit','km')
-        applyUnits(true)
+        localStorage.setItem('unit','km');
+        applyUnits(true);
     } else {
-        localStorage.setItem('unit','mi')
-        applyUnits(false)
+        localStorage.setItem('unit','mi');
+        applyUnits(false);
     }
-})
+});
 
 // load the localStorage item if there is one
 window.addEventListener('DOMContentLoaded', () => {
-    let savedUnit = localStorage.getItem('unit')
+    let savedUnit = localStorage.getItem('unit');
 
     if (savedUnit === 'km') {
-        applyUnits(true)
+        applyUnits(true);
     }
-})
+});
 
-function toggleMi() {
-    let distance = document.querySelectorAll('.distance')
-    let labels = document.querySelectorAll('.distance-label')
-    let durations = document.querySelectorAll('.pace')
-
+function toggleMi(distance, labels, durations) {
     for (let dist of distance) {
-        dist.innerHTML = (parseFloat(dist.dataset.mi)).toFixed(2)
+        dist.innerHTML = (parseFloat(dist.dataset.mi)).toFixed(2);
     }
 
     for (let label of labels) {
-        label.innerHTML = 'mi'
+        label.innerHTML = 'mi';
     }
 
     for (let duration of durations) {
-        duration.innerHTML = duration.dataset.miPace
+        duration.innerHTML = duration.dataset.miPace;
     }
-
 }
 
-function toggleKm() {
-    let distance = document.querySelectorAll('.distance')
-    let labels = document.querySelectorAll('.distance-label')
-    let durations = document.querySelectorAll('.pace')
-
+function toggleKm(distance, labels, durations) {
     for (let dist of distance) {
-        let miles = parseFloat(dist.dataset.mi)
-        let km = miles * 1.60934
-        dist.innerHTML = km.toFixed(2)
+        let miles = parseFloat(dist.dataset.mi);
+        let km = miles * 1.60934;
+        dist.innerHTML = km.toFixed(2);
     }
 
     for (let label of labels) {
-        label.innerHTML = 'km'
+        label.innerHTML = 'km';
     }
 
     for (let duration of durations) {
-        let totalSeconds = duration.dataset.seconds
+        let totalSeconds = duration.dataset.seconds;
         if (totalSeconds > 0) {
-            let distance = (parseFloat(duration.dataset.mi) * 1.60934)
-            let minutes = parseInt((totalSeconds / distance) / 60)
-            let seconds = parseInt((totalSeconds /distance) % 60)
-            duration.innerHTML = `${minutes}:${seconds}`
+            let distance = (parseFloat(duration.dataset.mi) * 1.60934);
+            let minutes = parseInt((totalSeconds / distance) / 60);
+            let seconds = parseInt((totalSeconds /distance) % 60);
+            duration.innerHTML = `${minutes}:${seconds}`;
         } else {
-            duration.innerHTML = "0:00"
+            duration.innerHTML = "0:00";
         }
-
     }
 }
 
-// for convert initial values of update forms
+// for converting initial values of update forms
 window.addEventListener('DOMContentLoaded', () => {
     const currentUnit = localStorage.getItem('unit') || 'mi';
 
@@ -91,13 +85,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         // update headers
-        const header = document.getElementById('unit-header')
-        const hiddenInput = document.getElementById('unit_type')
+        const header = document.getElementById('unit-header');
+        const hiddenInput = document.getElementById('unit_type');
         if (header) {
-            header.innerText = 'Distance (km)'
+            header.innerText = 'Distance (km)';
         }
         if (hiddenInput) {
-            hiddenInput.value = 'km'
+            hiddenInput.value = 'km';
         }
     }
 });
