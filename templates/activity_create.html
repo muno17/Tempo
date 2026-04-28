@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="form-block">
@@ -35,15 +36,5 @@
             <button type="submit" class="save">Create</button>
         </form>
     </div>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const unitPref = localStorage.getItem('unit') || 'mi'
-            document.getElementById('unit-header').innerText = `Distance (${unitPref})`
-        })
-
-        document.querySelector('form').addEventListener('submit', function() {
-            const unitPref = localStorage.getItem('unit') || 'mi'
-            document.getElementById('unit_type').value = unitPref
-        })
-    </script>
+    <script src="{% static 'js/form_units.js' %}"></script>
 {% endblock content %}

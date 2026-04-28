@@ -260,7 +260,7 @@ class ActivityUtilityMixin():
 
 class ActivityCreateView(ActivityUtilityMixin, CreateView):
     model = Activity
-    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
+    fields = ['title', 'timestamp', 'cycle', 'perceived_effort', 'notes']
     template_name = 'activity_create.html'
     success_url = reverse_lazy('activity-list')
 
@@ -273,7 +273,7 @@ class ActivityCreateView(ActivityUtilityMixin, CreateView):
         if cycle_id:
             initial['cycle'] = cycle_id
         else:
-            latest_cycle = Cycle.objects.order_by('-id').first()
+            latest_cycle = Cycle.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
             if latest_cycle:
                 initial['cycle'] = latest_cycle.id
         return initial
@@ -322,7 +322,7 @@ class ActivityDeleteView(DeleteView):
 class ActivityUpdateView(ActivityUtilityMixin, UpdateView):
     model = Activity
     template_name = 'activity_update.html'
-    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
+    fields = ['title', 'timestamp', 'cycle', 'perceived_effort', 'notes']
     success_url = reverse_lazy('activity-list')
 
     def get_queryset(self):
