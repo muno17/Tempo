@@ -114,8 +114,8 @@
                 </thead>
                 <tbody>
                     {% for activity in latest_activities %}
-                    <tr>
-                        <td><a href="{% url 'activity-detail' activity.id %}">{{ activity.timestamp|date:"m/d/Y" }}</a></td>
+                    <tr data-href="{% url 'activity-detail' activity.id%}">
+                        <td>{{ activity.timestamp|date:"m/d/Y" }}</td>
                         <td>{{ activity.title  }}</td>
                         <td>{{ activity.mileage|as_distance }}</td>
                         <td>{{ activity.time_display }}</td>

@@ -74,8 +74,8 @@
             </thead>
             <tbody>
                 {% for cycle in current_block.cycles.all %}
-                <tr>
-                    <td><a href="{% url 'cycle-detail' cycle.id %}">{{ cycle.start|date:"m/d/Y"  }}</a></td>
+                <tr data-href="{% url 'cycle-detail' cycle.id%}">
+                    <td>{{ cycle.start|date:"m/d/Y"  }}</td>
                     <td>{{ cycle.end|date:"m/d/Y"  }}</td>
                     <td>{{ cycle.mileage|as_distance }}</td>
                     <td>{{ cycle.time_display }}</td>

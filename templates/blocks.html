@@ -26,8 +26,8 @@
                 </thead>
                 <tbody>
                     {% for block in blocks %}
-                    <tr>
-                        <td><a href="{% url 'block-detail' block.id  %}">{{ block.name }}</a></td>
+                    <tr data-href="{% url 'block-detail' block.id%}">
+                        <td>{{ block.name }}</td>
                         <td>{{ block.start|date:"m/d/Y"  }}</td>
                         <td>{{ block.end|date:"m/d/Y"  }}</td>
                         <td>{{ block.mileage|as_distance }}</td>
