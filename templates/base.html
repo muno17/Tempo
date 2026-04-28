@@ -18,7 +18,7 @@
             Logged in as {{ user.username }}
             <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="save login">Log Out</button>
+            <div id="logout"><button type="submit" class="save login">Log Out</button></div>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Log In</a>
@@ -37,7 +37,7 @@
         <hr>
         <label class="switch">
             <input type="checkbox" id="km_toggle">
-            <span class="slider">km</span>
+            <span class="slider">use km</span>
         </label>
         <hr>
     </header>

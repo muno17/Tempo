@@ -89,6 +89,24 @@ a {
     display: block;
 }
 
+header form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+#logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100%;
+}
+
+#logout button {
+    display: block;
+}
+
 .button a {
     color: white;
 }
