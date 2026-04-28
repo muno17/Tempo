@@ -1,3 +1,4 @@
+// make entire rows clickable
 document.addEventListener('DOMContentLoaded', () => {
     const rows = document.querySelectorAll('tr[data-href]');
     rows.forEach(row => {
@@ -10,4 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
 });
+
