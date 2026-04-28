@@ -232,6 +232,10 @@ button {
     margin-top: 15px;
 }
 
+.save.login {
+    margin-left: 0;
+}
+
 form p {
     margin-bottom: 15px;
     margin-left: 35px;
