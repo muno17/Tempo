@@ -143,7 +143,7 @@ class CycleCreateView(CreateView):
         if block_id:
             initial['block'] = block_id
         else:
-            latest_block = Block.objects.order_by('-id').first()
+            latest_block = Block.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
             if latest_block:
                 initial['block'] = latest_block.id
         return initial
@@ -217,28 +217,28 @@ SegmentFormSet = inlineformset_factory(
         }),
     },
 )
-class ActivityCreateView(CreateView):
-    model = Activity
-    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
-    template_name = 'activity_create.html'
-    success_url = reverse_lazy('activity-list')
 
-    def get_initial(self):
-        """get cycle that was passed in or the current cycle if not"""
-        initial = super().get_initial()
 
-        cycle_id = self.kwargs.get('cycle_id')
+class ActivityUtilityMixin():
+    def get_context_data(self, **kwargs):
+        """Adds the Activity's segment info to the context"""
+        context = super().get_context_data(**kwargs)
+        user = get_target_user(self.request)
 
-        if cycle_id:
-            initial['cycle'] = cycle_id
+        if self.request.POST:
+            formset = SegmentFormSet(self.request.POST, instance=self.object)
         else:
-            latest_cycle = Cycle.objects.order_by('-id').first()
-            if latest_cycle:
-                initial['cycle'] = latest_cycle.id
-        return initial
+            formset = SegmentFormSet(instance=self.object)
+
+        # get the right shoes for the user to display
+        for form in formset.forms:
+            form.fields['shoe'].queryset = Shoe.objects.filter(user=user)
+
+        context['segments'] = formset
+        return context
 
     def get_form(self):
-        """Have the form render the timestamp as a date-picker and time field."""
+        """Have the form render the timestamp as a date-picker and time field"""
         form = super().get_form()
         user = get_target_user(self.request)
         if 'cycle' in form.fields:
@@ -257,22 +257,26 @@ class ActivityCreateView(CreateView):
         )
         return form
 
-    def get_context_data(self, **kwargs):
-        """Adds the form's segment info to the context"""
-        context = super().get_context_data(**kwargs)
-        user = get_target_user(self.request)
 
-        if self.request.POST:
-            formset = SegmentFormSet(self.request.POST, instance=self.object)
+class ActivityCreateView(ActivityUtilityMixin, CreateView):
+    model = Activity
+    fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
+    template_name = 'activity_create.html'
+    success_url = reverse_lazy('activity-list')
+
+    def get_initial(self):
+        """get cycle that was passed in or the current cycle if not"""
+        initial = super().get_initial()
+
+        cycle_id = self.kwargs.get('cycle_id')
+
+        if cycle_id:
+            initial['cycle'] = cycle_id
         else:
-            formset = SegmentFormSet(instance=self.object)
-
-        # get the right shoes for the user to display
-        for form in formset.forms:
-            form.fields['shoe'].queryset = Shoe.objects.filter(user=user)
-
-        context['segments'] = formset
-        return context
+            latest_cycle = Cycle.objects.order_by('-id').first()
+            if latest_cycle:
+                initial['cycle'] = latest_cycle.id
+        return initial
 
     def form_valid(self, form):
         """Links the Activity to the segments and saves the activity and segments"""
@@ -315,7 +319,7 @@ class ActivityDeleteView(DeleteView):
         return super().get_queryset().filter(user=user)
 
 
-class ActivityUpdateView(UpdateView):
+class ActivityUpdateView(ActivityUtilityMixin, UpdateView):
     model = Activity
     template_name = 'activity_update.html'
     fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
@@ -324,43 +328,6 @@ class ActivityUpdateView(UpdateView):
     def get_queryset(self):
         user = get_target_user(self.request)
         return super().get_queryset().filter(user=user)
-
-    def get_context_data(self, **kwargs):
-        """Adds the Activity's segment info to the context"""
-        context = super().get_context_data(**kwargs)
-        user = get_target_user(self.request)
-
-        if self.request.POST:
-            formset = SegmentFormSet(self.request.POST, instance=self.object)
-        else:
-            formset = SegmentFormSet(instance=self.object)
-
-        # get the right shoes for the user to display
-        for form in formset.forms:
-            form.fields['shoe'].queryset = Shoe.objects.filter(user=user)
-
-        context['segments'] = formset
-        return context
-
-    def get_form(self):
-        """Have the form render the timestamp as a date-picker and time field"""
-        form = super().get_form()
-        user = get_target_user(self.request)
-        if 'cycle' in form.fields:
-            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
-        if 'block' in form.fields:
-            form.fields['block'].queryset = Block.objects.filter(user=user)
-        if 'default_shoe' in form.fields:
-            form.fields['default_shoe'].queryset = Shoe.objects.filter(user=user)
-        # SplitDateTimeWidget separates the datetime so we can have two separate fields
-        # SplitDateTimeField joins the date and time fields into a single datetime object
-        form.fields['timestamp'] = SplitDateTimeField(
-            widget=SplitDateTimeWidget(
-            date_attrs={'type': 'date'},
-            time_attrs={'type': 'time'}
-            )
-        )
-        return form
 
     def form_valid(self, form):
         """Links the Activity to the segments, handles updating/deleting segments"""
@@ -413,6 +380,10 @@ class ShoeCreateView(CreateView):
     context_object_name = 'shoe'
     fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'init_duration', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
+
+    def form_valid(self, form):
+        form.instance.user = get_target_user(self.request)
+        return super().form_valid(form)
 
 
 class ShoeDetailView(DetailView):
