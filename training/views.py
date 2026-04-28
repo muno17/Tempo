@@ -21,15 +21,21 @@ class IndexView(TemplateView):
         context['latest_block'] = Block.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
         context['latest_cycle'] = Cycle.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
         context['latest_activities'] = Activity.objects.filter(user=get_target_user(self.request)).order_by('-id').all()[:5]
-        context['total_miles'] = Segment.objects.filter(user=get_target_user(self.request)).aggregate(Sum('distance'))['distance__sum']
         context['total_duration'] = Segment.objects.filter(user=get_target_user(self.request)).aggregate(Sum('duration'))['duration__sum']
         context['activity_count'] = Activity.objects.filter(user=get_target_user(self.request)).count()
-        context['longest_run'] = Activity.objects.filter(user=get_target_user(self.request)).annotate(
-            total_miles=Sum('segments__distance')
-        ).aggregate(Max('total_miles'))['total_miles__max'] or 0.0
         context['longest_duration'] = Activity.objects.filter(user=get_target_user(self.request)).annotate(
             total_duration=Sum('segments__duration')
         ).aggregate(Max('total_duration'))['total_duration__max'] or 0.0
+
+        longest_run = Activity.objects.filter(user=get_target_user(self.request)).annotate(
+            total_miles=Sum('segments__distance')
+        ).aggregate(Max('total_miles'))['total_miles__max'] or 0.0
+        if longest_run:
+            context['longest_run'] = round(longest_run, 2)
+
+        total_miles = Segment.objects.filter(user=get_target_user(self.request)).aggregate(Sum('distance'))['distance__sum']
+        if total_miles:
+            context['total_miles'] = round(total_miles, 2)
 
         return context
 
@@ -239,6 +245,8 @@ class ActivityCreateView(CreateView):
             form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
         if 'block' in form.fields:
             form.fields['block'].queryset = Block.objects.filter(user=user)
+        if 'default_shoe' in form.fields:
+            form.fields['default_shoe'].queryset = Shoe.objects.filter(user=user)
         # SplitDateTimeWidget separates the datetime so we can have two separate fields
         # SplitDateTimeField joins the date and time fields into a single datetime object
         form.fields['timestamp'] = SplitDateTimeField(
@@ -252,12 +260,18 @@ class ActivityCreateView(CreateView):
     def get_context_data(self, **kwargs):
         """Adds the form's segment info to the context"""
         context = super().get_context_data(**kwargs)
+        user = get_target_user(self.request)
 
         if self.request.POST:
-            context['segments'] = SegmentFormSet(self.request.POST)
+            formset = SegmentFormSet(self.request.POST, instance=self.object)
         else:
-            context['segments'] = SegmentFormSet()
+            formset = SegmentFormSet(instance=self.object)
 
+        # get the right shoes for the user to display
+        for form in formset.forms:
+            form.fields['shoe'].queryset = Shoe.objects.filter(user=user)
+
+        context['segments'] = formset
         return context
 
     def form_valid(self, form):
@@ -314,12 +328,18 @@ class ActivityUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         """Adds the Activity's segment info to the context"""
         context = super().get_context_data(**kwargs)
+        user = get_target_user(self.request)
 
         if self.request.POST:
-            context['segments'] = SegmentFormSet(self.request.POST, instance=self.object)
+            formset = SegmentFormSet(self.request.POST, instance=self.object)
         else:
-            context['segments'] = SegmentFormSet(instance=self.object)
+            formset = SegmentFormSet(instance=self.object)
 
+        # get the right shoes for the user to display
+        for form in formset.forms:
+            form.fields['shoe'].queryset = Shoe.objects.filter(user=user)
+
+        context['segments'] = formset
         return context
 
     def get_form(self):
@@ -330,6 +350,8 @@ class ActivityUpdateView(UpdateView):
             form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
         if 'block' in form.fields:
             form.fields['block'].queryset = Block.objects.filter(user=user)
+        if 'default_shoe' in form.fields:
+            form.fields['default_shoe'].queryset = Shoe.objects.filter(user=user)
         # SplitDateTimeWidget separates the datetime so we can have two separate fields
         # SplitDateTimeField joins the date and time fields into a single datetime object
         form.fields['timestamp'] = SplitDateTimeField(
