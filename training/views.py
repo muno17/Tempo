@@ -6,7 +6,11 @@ from django.views.generic import ListView, TemplateView, DetailView, CreateView,
 from django.db.models import Sum, Max
 from .models import Block, Cycle, Activity, Segment, Shoe
 
-
+def get_target_user(request):
+    if request.user.is_authenticated:
+        return request.user
+    # get demo user for guests
+    return User.objects.get(username='demo')
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -14,16 +18,16 @@ class IndexView(TemplateView):
         """Get the latest block, cycle and activity info"""
         context = super().get_context_data(**kwargs)
 
-        context['latest_block'] = Block.objects.order_by('-id').first()
-        context['latest_cycle'] = Cycle.objects.order_by('-id').first()
-        context['latest_activities'] = Activity.objects.order_by('-id').all()[:5]
-        context['total_miles'] = round(Segment.objects.aggregate(Sum('distance'))['distance__sum'],2)
-        context['total_duration'] = Segment.objects.aggregate(Sum('duration'))['duration__sum']
-        context['activity_count'] = Activity.objects.count()
-        context['longest_run'] = round(Activity.objects.annotate(
+        context['latest_block'] = Block.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
+        context['latest_cycle'] = Cycle.objects.filter(user=get_target_user(self.request)).order_by('-id').first()
+        context['latest_activities'] = Activity.objects.filter(user=get_target_user(self.request)).order_by('-id').all()[:5]
+        context['total_miles'] = Segment.objects.filter(user=get_target_user(self.request)).aggregate(Sum('distance'))['distance__sum']
+        context['total_duration'] = Segment.objects.filter(user=get_target_user(self.request)).aggregate(Sum('duration'))['duration__sum']
+        context['activity_count'] = Activity.objects.filter(user=get_target_user(self.request)).count()
+        context['longest_run'] = Activity.objects.filter(user=get_target_user(self.request)).annotate(
             total_miles=Sum('segments__distance')
-        ).aggregate(Max('total_miles'))['total_miles__max'] or 0.0, 2)
-        context['longest_duration'] = Activity.objects.annotate(
+        ).aggregate(Max('total_miles'))['total_miles__max'] or 0.0
+        context['longest_duration'] = Activity.objects.filter(user=get_target_user(self.request)).annotate(
             total_duration=Sum('segments__duration')
         ).aggregate(Max('total_duration'))['total_duration__max'] or 0.0
 
@@ -35,6 +39,10 @@ class BlockListView(ListView):
     template_name = 'blocks.html'
     context_object_name = 'blocks'
     ordering = ['-start']
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class BlockDetailView(DetailView):
     model = Block
@@ -80,6 +88,10 @@ class CycleListView(ListView):
     template_name = 'cycles.html'
     context_object_name = 'cycles'
     ordering = ['-start']
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class CycleDetailView(DetailView):
     model = Cycle
@@ -137,6 +149,10 @@ class ActivityListView(ListView):
     template_name = 'activities.html'
     context_object_name = 'activities'
     ordering = ['-timestamp']
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class ActivityDetailView(DetailView):
     model = Activity
@@ -314,6 +330,10 @@ class ShoeListView(ListView):
     template_name = 'shoes.html'
     context_object_name = 'shoes'
     ordering = ['-date_added']
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 
 class ShoeCreateView(CreateView):
