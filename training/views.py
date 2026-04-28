@@ -49,6 +49,10 @@ class BlockDetailView(DetailView):
     template_name = 'block_details.html'
     context_object_name = 'current_block'
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 class BlockCreateView(CreateView):
     model = Block
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
@@ -57,8 +61,7 @@ class BlockCreateView(CreateView):
 
     def form_valid(self, form):
         """Links the Block to the user"""
-        super_user = User.objects.first()
-        form.instance.user = super_user
+        form.instance.user = get_target_user(self.request)
         self.object = form.save()
         return redirect(self.success_url)
 
@@ -75,6 +78,10 @@ class BlockDeleteView(DeleteView):
     context_object_name = 'current_block'
     success_url = reverse_lazy('block-list')
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 
 class BlockUpdateView(UpdateView):
     model = Block
@@ -82,6 +89,10 @@ class BlockUpdateView(UpdateView):
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
     context_object_name = 'current_block'
     success_url = reverse_lazy('block-list')
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class CycleListView(ListView):
     model = Cycle
@@ -98,10 +109,18 @@ class CycleDetailView(DetailView):
     template_name = 'cycle_details.html'
     context_object_name = 'cycle'
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 class CycleDeleteView(DeleteView):
     model = Cycle
     template_name = 'cycle_delete.html'
     success_url = reverse_lazy('cycle-list')
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class CycleCreateView(CreateView):
     model = Cycle
@@ -128,12 +147,18 @@ class CycleCreateView(CreateView):
         form = super().get_form()
         form.fields['start'].widget = DateInput(attrs={'type': 'date'})
         form.fields['end'].widget = DateInput(attrs={'type': 'date'})
+
+        user = get_target_user(self.request)
+        if 'cycle' in form.fields:
+            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
+        if 'block' in form.fields:
+            form.fields['block'].queryset = Block.objects.filter(user=user)
+
         return form
 
     def form_valid(self, form):
         """Links the Cycle to the segments and saves the activity and segments"""
-        super_user = User.objects.first()
-        form.instance.user = super_user
+        form.instance.user = get_target_user(self.request)
         self.object = form.save()
         return redirect(self.success_url)
 
@@ -143,6 +168,10 @@ class CycleUpdateView(UpdateView):
     template_name = 'cycle_update.html'
     fields = ['block', 'start', 'end']
     success_url = reverse_lazy('cycle-list')
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 class ActivityListView(ListView):
     model = Activity
@@ -158,6 +187,10 @@ class ActivityDetailView(DetailView):
     model = Activity
     template_name = 'activity_details.html'
     context_object_name = 'activity'
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
 
 # formset is needed to have a nested form for segments within an activity
@@ -201,6 +234,11 @@ class ActivityCreateView(CreateView):
     def get_form(self):
         """Have the form render the timestamp as a date-picker and time field."""
         form = super().get_form()
+        user = get_target_user(self.request)
+        if 'cycle' in form.fields:
+            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
+        if 'block' in form.fields:
+            form.fields['block'].queryset = Block.objects.filter(user=user)
         # SplitDateTimeWidget separates the datetime so we can have two separate fields
         # SplitDateTimeField joins the date and time fields into a single datetime object
         form.fields['timestamp'] = SplitDateTimeField(
@@ -224,8 +262,7 @@ class ActivityCreateView(CreateView):
 
     def form_valid(self, form):
         """Links the Activity to the segments and saves the activity and segments"""
-        super_user = User.objects.first()
-        form.instance.user = super_user
+        form.instance.user = get_target_user(self.request)
         self.object = form.save()
 
         context = self.get_context_data()
@@ -240,7 +277,7 @@ class ActivityCreateView(CreateView):
 
             # link segment to the superuser and to the activity
             for instance in seg_instances:
-                instance.user = super_user
+                instance.user = get_target_user(self.request)
                 instance.activity = self.object
 
                 # conver distance if the user input in km
@@ -259,12 +296,20 @@ class ActivityDeleteView(DeleteView):
     template_name = 'activity_delete.html'
     success_url = reverse_lazy('activity-list')
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 
 class ActivityUpdateView(UpdateView):
     model = Activity
     template_name = 'activity_update.html'
     fields = ['title', 'timestamp', 'cycle', 'planned', 'perceived_effort', 'notes']
     success_url = reverse_lazy('activity-list')
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
 
     def get_context_data(self, **kwargs):
         """Adds the Activity's segment info to the context"""
@@ -280,6 +325,11 @@ class ActivityUpdateView(UpdateView):
     def get_form(self):
         """Have the form render the timestamp as a date-picker and time field"""
         form = super().get_form()
+        user = get_target_user(self.request)
+        if 'cycle' in form.fields:
+            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
+        if 'block' in form.fields:
+            form.fields['block'].queryset = Block.objects.filter(user=user)
         # SplitDateTimeWidget separates the datetime so we can have two separate fields
         # SplitDateTimeField joins the date and time fields into a single datetime object
         form.fields['timestamp'] = SplitDateTimeField(
@@ -292,8 +342,7 @@ class ActivityUpdateView(UpdateView):
 
     def form_valid(self, form):
         """Links the Activity to the segments, handles updating/deleting segments"""
-        super_user = User.objects.first()
-        form.instance.user = super_user
+        form.instance.user = get_target_user(self.request)
 
         context = self.get_context_data()
         segments = context['segments']
@@ -311,7 +360,7 @@ class ActivityUpdateView(UpdateView):
 
             # link segment to the superuser and to the activity
             for instance in seg_instances:
-                instance.user = super_user
+                instance.user = get_target_user(self.request)
                 instance.activity = self.object
 
                 # conver distance if the user input in km
@@ -349,6 +398,10 @@ class ShoeDetailView(DetailView):
     template_name ='shoe_details.html'
     context_object_name = 'shoe'
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 
 class ShoeUpdateView(UpdateView):
     model = Shoe
@@ -356,9 +409,17 @@ class ShoeUpdateView(UpdateView):
     fields = ['brand', 'model_name', 'nickname', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
 
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
 
 class ShoeDeleteView(DeleteView):
     model = Shoe
     template_name = 'shoe_delete.html'
     context_object_name = 'shoe'
     success_url = reverse_lazy('shoe-list')
+
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
