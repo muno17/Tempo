@@ -6,6 +6,13 @@ body {
     justify-content: flex-start;
 }
 
+#logo {
+    font-size: 45px;
+    color: white;
+    text-shadow: 1px 1px 4px black;
+    margin-bottom: 50px;
+}
+
 #block-content {
     padding: 20px;
     margin: 5px;
@@ -76,6 +83,17 @@ a {
     color: black;
 }
 
+
+#footer, #footer div a {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-size: 20px;
+}
+
+#footer div a {
+    margin-top: 50px;
+}
+
 .button a {
     color: white;
 }
@@ -132,6 +150,8 @@ a {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 1500px;
 }
 
 .stats-block {
@@ -158,6 +178,7 @@ a {
     padding-top: 10px;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    margin-left: 25px;
     max-width: 500px;
 }
 
@@ -173,6 +194,10 @@ a {
     padding: 7px;
     max-width: 120px;
     text-align: center;
+}
+
+.button {
+    margin-left: 35px;
 }
 
 .delete {
@@ -208,10 +233,13 @@ button {
     background-color:#ECC987;
     color: white;
     font-size: 20px;
+    margin-left: 45px;
+    margin-top: 15px;
 }
 
 form p {
     margin-bottom: 15px;
+    margin-left: 35px;
     gap: 15px;
     display: flex;
 }
@@ -233,6 +261,7 @@ input {
 .default-message {
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 35px;
 }
 
 hr {
@@ -240,5 +269,5 @@ hr {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #e9f0d1;
+    background-color: #E9f0D1;
 }
