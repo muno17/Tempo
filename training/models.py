@@ -25,7 +25,7 @@ class StatsMixin():
 
     @property
     def pace(self):
-        """Returns the average pace of the block"""
+        """Returns the average pace"""
         miles = float(self.mileage)
         duration = self.time
 
@@ -82,7 +82,7 @@ class Shoe(models.Model, StatsMixin):
             total=models.Sum('distance')
         )['total'] or 0
 
-        return float(self.init_mileage) + float(f"{shoe_miles:.2f}")
+        return round(self.init_mileage, 2) + round(shoe_miles, 2)
 
     @property
     def time(self):
@@ -121,7 +121,7 @@ class Block(models.Model, StatsMixin):
             total=models.Sum('activities__segments__distance')
         )['total'] or 0
 
-        return float(f"{block_miles:.2f}")
+        return round(block_miles, 2)
 
     @cached_property
     def time(self):
@@ -157,7 +157,7 @@ class Cycle(models.Model, StatsMixin):
             total=models.Sum('segments__distance')
         )['total'] or 0
 
-        return float(f"{cycle_miles:.2f}")
+        return round(cycle_miles, 2)
 
     @cached_property
     def time(self):
@@ -202,7 +202,7 @@ class Activity(models.Model, StatsMixin):
             total=models.Sum('distance')
         )['total'] or 0
 
-        return float(f"{activity_miles:.2f}")
+        return round(activity_miles, 2)
 
     @cached_property
     def time(self):
@@ -284,4 +284,4 @@ class Segment(models.Model):
     @property
     def distance_display(self):
         """Returns the distance formatted to 2 decimal places"""
-        return f"{self.distance:.2f}"
+        return round(self.distance, 2)
