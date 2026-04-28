@@ -12,7 +12,17 @@
 </head>
 <body>
     <header>
-        <div id="logo">Tempo</div>
+        <div id="logo"><a href="/">Tempo</a></div>
+        <hr>
+        {% if user.is_authenticated %}
+            Logged in as {{ user.username }}
+            <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="save">Log Out</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Log In</a>
+        {% endif %}
         <hr>
         <a href="/">Dashboard</a>
         <hr>
@@ -29,10 +39,6 @@
             <span class="slider">km</span>
         </label>
         <hr>
-        <div id="footer">
-            <div>Danny Muñoz</div>
-            <div><a href="https://github.com/muno17/Tempo">github</a></div>
-        </div>
     </header>
     <div id="block-content">
         {% block content %}

@@ -1,7 +1,9 @@
 from django import template
 from django.utils.safestring import mark_safe
-print("loading tags")
+
 register = template.Library()
+
+# tags to help convert from km to mi and back
 
 @register.filter
 def as_distance(value):
