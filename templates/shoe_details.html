@@ -70,8 +70,8 @@
             </thead>
             <tbody>
             {% for segment in shoe.segments.all %}
-                <tr>
-                <td><a href="{% url 'activity-detail' segment.activity.id%}">{{ segment.activity.title }}</a></td>
+                <tr data-href="{% url 'activity-detail' segment.activity.id%}">
+                <td>{{ segment.activity.title }}</td>
                 <td>{{ segment.get_type_display }}</td>
                 <td>{{ segment.distance_display|as_distance }}</td>
                 <td>{{ segment.time_display }}</td>

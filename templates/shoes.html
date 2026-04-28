@@ -25,8 +25,8 @@
             </thead>
             <tbody>
                 {% for shoe in shoes %}
-                    <tr>
-                        <td><a href="{% url 'shoe-detail' shoe.id %}">{{ shoe.nickname }}</a></td>
+                    <tr data-href="{% url 'shoe-detail' shoe.id%}">
+                        <td>{{ shoe.nickname }}</td>
                         <td>{{ shoe.brand }}</td>
                         <td>{{ shoe.model_name }}</td>
                         <td>{{ shoe.mileage|as_distance }}</td>
