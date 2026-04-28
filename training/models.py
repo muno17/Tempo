@@ -6,7 +6,38 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+class StatsMixin():
+    @property
+    def time_display(self):
+        """Returns the total time spent running in a user friendly format"""
+        duration = self.time
+        if not duration or duration.total_seconds() == 0:
+            return "0:00"
 
+        total_seconds = int(duration.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+
+        if hours > 0:
+            return f"{hours}:{minutes:02d}:{seconds:02d}"
+        return f"{minutes}:{seconds:02d}"
+
+    @property
+    def pace(self):
+        """Returns the average pace of the block"""
+        miles = float(self.mileage)
+        duration = self.time
+
+        if miles <= 0 or not duration:
+            return "0:00"
+
+        total_seconds = duration.total_seconds()
+        seconds_per_mile = total_seconds / miles
+
+        minutes = int(seconds_per_mile // 60)
+        seconds = int(seconds_per_mile % 60)
+        return f'{minutes}:{seconds:02d}'
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -24,7 +55,7 @@ class Profile(models.Model):
         return f'{self.user.username}\'s Profile'
 
 
-class Shoe(models.Model):
+class Shoe(models.Model, StatsMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     brand = models.CharField(max_length=100)
     model_name = models.CharField(max_length=100)
@@ -65,24 +96,9 @@ class Shoe(models.Model):
 
         return shoe_time + self.init_duration
 
-    @property
-    def time_display(self):
-        """Returns the total time spent running for the activity in a user friendly format"""
-        duration = self.time
-        if not duration or duration.total_seconds() == 0:
-            return "0:00"
-
-        total_seconds = int(duration.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-
-        if hours > 0:
-            return f"{hours}:{minutes:02d}:{seconds:02d}"
-        return f"{minutes}:{seconds:02d}"
 
 
-class Block(models.Model):
+class Block(models.Model, StatsMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
@@ -119,44 +135,8 @@ class Block(models.Model):
 
         return block_time
 
-    @property
-    def time_display(self):
-        """Returns the total time spent running for the block in a user friendly format"""
-        duration = self.time
-        if not duration or duration.total_seconds() == 0:
-            return "0:00"
 
-        total_seconds = int(duration.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-
-        if hours > 0:
-            return f"{hours}:{minutes:02d}:{seconds:02d}"
-        return f"{minutes}:{seconds:02d}"
-
-    time_display.fget.short_description = 'Total Time'
-
-    @property
-    def pace(self):
-        """Returns the average pace of the block"""
-        miles = float(self.mileage)
-        duration = self.time
-
-        if miles <= 0 or not duration:
-            return "0:00"
-
-        total_seconds = duration.total_seconds()
-        seconds_per_mile = total_seconds / miles
-
-        minutes = int(seconds_per_mile // 60)
-        seconds = int(seconds_per_mile % 60)
-        return f'{minutes}:{seconds:02d}'
-
-    pace.fget.short_description = "Pace (/mi)"
-
-
-class Cycle(models.Model):
+class Cycle(models.Model, StatsMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     block = models.ForeignKey(Block, on_delete=models.SET_NULL, null=True, blank=True,
                               related_name='cycles')
@@ -191,45 +171,8 @@ class Cycle(models.Model):
 
         return cycle_time
 
-    @property
-    def time_display(self):
-        """Returns the total time spent running for the cycle in a user friendly format"""
-        duration = self.time
-        if not duration or duration.total_seconds() == 0:
-            return "0:00"
 
-        total_seconds = int(duration.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-
-        if hours > 0:
-            return f"{hours}:{minutes:02d}:{seconds:02d}"
-        return f"{minutes}:{seconds:02d}"
-
-    time_display.fget.short_description = 'Total Time'
-
-    @property
-    def pace(self):
-        """Returns the average pace of the cycle"""
-        miles = float(self.mileage)
-        duration = self.time
-
-        if miles <= 0 or not duration:
-            return "0:00"
-
-        total_seconds = duration.total_seconds()
-        seconds_per_mile = total_seconds / miles
-
-        minutes = int(seconds_per_mile // 60)
-        seconds = int(seconds_per_mile % 60)
-
-        return f'{minutes}:{seconds:02d}'
-
-    pace.fget.short_description = "Pace (/mi)"
-
-
-class Activity(models.Model):
+class Activity(models.Model, StatsMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     cycle = models.ForeignKey(Cycle, on_delete=models.CASCADE, null=True, blank=True,
                               related_name='activities')
@@ -272,44 +215,6 @@ class Activity(models.Model):
             return timedelta(0)
 
         return activity_time
-
-    @property
-    def time_display(self):
-        """Returns the total time spent running for the activity in a user friendly format"""
-        duration = self.time
-        if not duration or duration.total_seconds() == 0:
-            return "0:00"
-
-        total_seconds = int(duration.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-
-        if hours > 0:
-            return f"{hours}:{minutes:02d}:{seconds:02d}"
-        return f"{minutes}:{seconds:02d}"
-
-    time_display.fget.short_description = 'Time'
-
-    @property
-    def pace(self):
-        """Returns the average pace of the activity"""
-        miles = float(self.mileage)
-        duration = self.time
-
-        if miles <= 0 or not duration:
-            return "0:00"
-
-        total_seconds = duration.total_seconds()
-        seconds_per_mile = total_seconds / miles
-
-        minutes = int(seconds_per_mile // 60)
-        seconds = int(seconds_per_mile % 60)
-
-        return f'{minutes}:{seconds:02d}'
-
-
-    pace.fget.short_description = "Pace (/mi)"
 
 
 class Segment(models.Model):
