@@ -135,7 +135,7 @@ from platformshconfig import Config
 
 config = Config()
 if config.is_valid_platform():
-    for route in config.routes:
+    for route in config.routes():
         from urllib.parse import urlparse
         hostname = urlparse(route['url']).hostname
         if hostname and hostname not in ALLOWED_HOSTS:
