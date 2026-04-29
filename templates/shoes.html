@@ -9,6 +9,7 @@
                 <a href="{% url 'shoe-create' %}">+ add Shoe</a>
             </div>
         </div>
+    {% if shoes %}
         <table>
             <thead>
                 <tr>
@@ -54,5 +55,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+            <div class="default-message">No Shoes have been added yet</div>
+    {% endif %}
     </div>
 {% endblock content %}

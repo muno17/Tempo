@@ -9,6 +9,7 @@
                     <a href="{% url 'activity-create' %}">+ add Activity</a>
                 </div>
         </div>
+    {% if activities %}
         <table>
             <thead>
                 <tr>
@@ -47,5 +48,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <div class="default-message">No Activities have been added yet</div>
+    {% endif %}
     </div>
 {% endblock %}

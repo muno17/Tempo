@@ -9,6 +9,7 @@
             <a href="{% url 'cycle-create' %}">+ add Cycle</a>
         </div>
     </div>
+    {% if cycles %}
         <table>
             <thead>
                 <tr>
@@ -47,5 +48,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <div class="default-message">No Cycles have been added yet</div>
+    {% endif %}
     </div>
 {% endblock content %}
