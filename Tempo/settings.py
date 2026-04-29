@@ -135,11 +135,15 @@ from platformshconfig import Config
 
 config = Config()
 if config.is_valid_platform():
-    for route in config.routes():
-        from urllib.parse import urlparse
-        hostname = urlparse(route['url']).hostname
-        if hostname and hostname not in ALLOWED_HOSTS:
-            ALLOWED_HOSTS.append(hostname)
+    if not config.in_build():
+        for route in config.routes():
+            from urllib.parse import urlparse
+
+            hostname = urlparse(route['url']).hostname
+            if hostname and hostname not in ALLOWED_HOSTS:
+                ALLOWED_HOSTS.append(hostname)
+    else:
+        ALLOWED_HOSTS.append('*')
 
     if config.appDir:
         STATIC_ROOT = Path(config.appDir) / 'static'
