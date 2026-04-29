@@ -14,7 +14,7 @@ applications:
       locations:
         "/":
           passthru: true
-        "static":
+        "/static":
           root: "static"
           expires: 1h
           allow: true
