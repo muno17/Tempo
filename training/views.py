@@ -40,26 +40,37 @@ class IndexView(TemplateView):
         return context
 
 
-class BlockListView(ListView):
+class UserDataMixin:
+    """Centralize user-based filtering"""
+    def get_queryset(self):
+        user = get_target_user(self.request)
+        return super().get_queryset().filter(user=user)
+
+
+class BlockFormMixin:
+    """Share form logic for date fields"""
+    def get_form(self):
+        """Have the form render the date fields as date-pickers"""
+        form = super().get_form()
+        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
+        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
+        return form
+
+
+class BlockListView(UserDataMixin, ListView):
     model = Block
     template_name = 'blocks.html'
     context_object_name = 'blocks'
     ordering = ['-start']
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class BlockDetailView(DetailView):
+class BlockDetailView(UserDataMixin, DetailView):
     model = Block
     template_name = 'block_details.html'
     context_object_name = 'current_block'
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class BlockCreateView(CreateView):
+class BlockCreateView(BlockFormMixin, CreateView):
     model = Block
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
     template_name = 'block_create.html'
@@ -71,64 +82,58 @@ class BlockCreateView(CreateView):
         self.object = form.save()
         return redirect(self.success_url)
 
-    def get_form(self):
-        """Have the form render the date fields as date-pickers"""
-        form = super().get_form()
-        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
-        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
-        return form
 
-class BlockDeleteView(DeleteView):
+class BlockDeleteView(UserDataMixin, DeleteView):
     model = Block
     template_name = 'block_delete.html'
     context_object_name = 'current_block'
     success_url = reverse_lazy('block-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-
-class BlockUpdateView(UpdateView):
+class BlockUpdateView(UserDataMixin, BlockFormMixin, UpdateView):
     model = Block
     template_name = 'block_update.html'
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
     context_object_name = 'current_block'
     success_url = reverse_lazy('block-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class CycleListView(ListView):
+class CycleListView(UserDataMixin, ListView):
     model = Cycle
     template_name = 'cycles.html'
     context_object_name = 'cycles'
     ordering = ['-start']
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class CycleDetailView(DetailView):
+class CycleDetailView(UserDataMixin, DetailView):
     model = Cycle
     template_name = 'cycle_details.html'
     context_object_name = 'cycle'
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class CycleDeleteView(DeleteView):
+class CycleDeleteView(UserDataMixin, DeleteView):
     model = Cycle
     template_name = 'cycle_delete.html'
     success_url = reverse_lazy('cycle-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class CycleCreateView(CreateView):
+class CycleFormMixin:
+    """Share form logic for date fields"""
+    def get_form(self):
+        """Have the form render the date fields as date-pickers"""
+        form = super().get_form()
+        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
+        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
+
+        user = get_target_user(self.request)
+        if 'cycle' in form.fields:
+            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
+        if 'block' in form.fields:
+            form.fields['block'].queryset = Block.objects.filter(user=user)
+
+        return form
+
+class CycleCreateView(CycleFormMixin, CreateView):
     model = Cycle
     fields = ['block', 'start', 'end']
     template_name = 'cycle_create.html'
@@ -148,20 +153,6 @@ class CycleCreateView(CreateView):
                 initial['block'] = latest_block.id
         return initial
 
-    def get_form(self):
-        """Have the form render the date fields as date-pickers"""
-        form = super().get_form()
-        form.fields['start'].widget = DateInput(attrs={'type': 'date'})
-        form.fields['end'].widget = DateInput(attrs={'type': 'date'})
-
-        user = get_target_user(self.request)
-        if 'cycle' in form.fields:
-            form.fields['cycle'].queryset = Cycle.objects.filter(user=user)
-        if 'block' in form.fields:
-            form.fields['block'].queryset = Block.objects.filter(user=user)
-
-        return form
-
     def form_valid(self, form):
         """Links the Cycle to the segments and saves the activity and segments"""
         form.instance.user = get_target_user(self.request)
@@ -169,34 +160,24 @@ class CycleCreateView(CreateView):
         return redirect(self.success_url)
 
 
-class CycleUpdateView(UpdateView):
+class CycleUpdateView(UserDataMixin, CycleFormMixin, UpdateView):
     model = Cycle
     template_name = 'cycle_update.html'
     fields = ['block', 'start', 'end']
     success_url = reverse_lazy('cycle-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class ActivityListView(ListView):
+class ActivityListView(UserDataMixin, ListView):
     model = Activity
     template_name = 'activities.html'
     context_object_name = 'activities'
     ordering = ['-timestamp']
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-class ActivityDetailView(DetailView):
+class ActivityDetailView(UserDataMixin, DetailView):
     model = Activity
     template_name = 'activity_details.html'
     context_object_name = 'activity'
-
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
 
 # formset is needed to have a nested form for segments within an activity
@@ -220,6 +201,7 @@ SegmentFormSet = inlineformset_factory(
 
 
 class ActivityUtilityMixin():
+    """Share segment inclusion and form logic"""
     def get_context_data(self, **kwargs):
         """Adds the Activity's segment info to the context"""
         context = super().get_context_data(**kwargs)
@@ -309,25 +291,17 @@ class ActivityCreateView(ActivityUtilityMixin, CreateView):
             # render form with error messages
             return self.render_to_response(self.get_context_data(form=form))
 
-class ActivityDeleteView(DeleteView):
+class ActivityDeleteView(UserDataMixin, DeleteView):
     model = Activity
     template_name = 'activity_delete.html'
     success_url = reverse_lazy('activity-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-
-class ActivityUpdateView(ActivityUtilityMixin, UpdateView):
+class ActivityUpdateView(UserDataMixin, ActivityUtilityMixin, UpdateView):
     model = Activity
     template_name = 'activity_update.html'
     fields = ['title', 'timestamp', 'cycle', 'perceived_effort', 'notes']
     success_url = reverse_lazy('activity-list')
-
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
     def form_valid(self, form):
         """Links the Activity to the segments, handles updating/deleting segments"""
@@ -363,15 +337,11 @@ class ActivityUpdateView(ActivityUtilityMixin, UpdateView):
             # render form with error messages
             return self.render_to_response(self.get_context_data(form=form))
 
-class ShoeListView(ListView):
+class ShoeListView(UserDataMixin, ListView):
     model = Shoe
     template_name = 'shoes.html'
     context_object_name = 'shoes'
     ordering = ['-date_added']
-
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
 
 class ShoeCreateView(CreateView):
@@ -386,33 +356,21 @@ class ShoeCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ShoeDetailView(DetailView):
+class ShoeDetailView(UserDataMixin, DetailView):
     model = Shoe
     template_name ='shoe_details.html'
     context_object_name = 'shoe'
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-
-class ShoeUpdateView(UpdateView):
+class ShoeUpdateView(UserDataMixin, UpdateView):
     model = Shoe
     template_name = 'shoe_update.html'
     fields = ['brand', 'model_name', 'nickname', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
 
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
 
-
-class ShoeDeleteView(DeleteView):
+class ShoeDeleteView(UserDataMixin, DeleteView):
     model = Shoe
     template_name = 'shoe_delete.html'
     context_object_name = 'shoe'
     success_url = reverse_lazy('shoe-list')
-
-    def get_queryset(self):
-        user = get_target_user(self.request)
-        return super().get_queryset().filter(user=user)
