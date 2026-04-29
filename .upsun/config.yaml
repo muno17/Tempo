@@ -1,38 +1,53 @@
-name: "Tempo"
-type: "python:3.14"
+# .upsun/config.yaml
 
-relationships:
-  database: "db:postgresql"
+applications:
+  tempo:
+    name: "Tempo"
+    type: "python:3.14"
 
-web:
-  upstream:
-    socket_family: unix
-  commands:
-    start: "gunicorn -w 4 -b unix:$SOCKET Tempo.wsgi:application"
-  locations:
-    "/":
-      passthru: true
-    "static":
-      root: "static"
-      expires: 1h
-      allow: true
+    relationships:
+      database: "db:postgresql"
 
-disk: 512
+    web:
+      upstream:
+        socket_family: unix
+      commands:
+        start: "gunicorn -w 4 -b unix:$SOCKET Tempo.wsgi:application"
+      locations:
+        "/":
+          passthru: true
+        "static":
+          root: "static"
+          expires: 1h
+          allow: true
 
-mounts:
-  "logs":
-    source: local
-    source_path: logs
+    disk: 512
 
-hooks:
-  build:
-    pip install --upgrade pip
-    pip install -r requirements.txt
-    pip install -r requirements_remote.txt
-  
-    mkdir logs
-    python manage.py collectstatic
-    rm -rf logs
+    mounts:
+      "logs":
+        source: local
+        source_path: logs
 
-  deploy:
-    python manage.py migrate
+    hooks:
+      build: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements_remote.txt
+        mkdir -p logs
+        python manage.py collectstatic --no-input
+      deploy: |
+        python manage.py migrate --no-input
+
+services:
+  db:
+    type: postgresql:14
+    disk: 1024
+
+routes:
+  "https://{default}/":
+    type: upstream
+    upstream: "tempo:http"
+
+  "https://www.{default}/":
+    type: redirect
+    to: "https://{default}/"
