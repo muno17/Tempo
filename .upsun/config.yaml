@@ -1,8 +1,6 @@
-# .upsun/config.yaml
 
 applications:
   tempo:
-    name: "Tempo"
     type: "python:3.14"
 
     relationships:
