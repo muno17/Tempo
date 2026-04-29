@@ -15,7 +15,7 @@ applications:
         "/":
           passthru: true
         "/static":
-          root: "static"
+          root: "assets"
           expires: 1h
           allow: true
 
