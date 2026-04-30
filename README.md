@@ -49,7 +49,6 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 ```
 #### App Setup
-Installing Locally
 
 *Note: This app is optimized for deployment on Upsun. To run locally, you must provide a .env file for configuration.*
 
@@ -76,6 +75,14 @@ python manage.py runserver
 
 ---
 ## Usage
+
+```
+Data Hierarchy:
+└── Block (Macrocycle)
+    └── Cycle (Microcycle - Custom Length)
+        └── Activity (The Run)
+            └── Segments (Intervals/Splits)
+```
 
 1. **Sign Up for an account or Log In if you already have one**.  By default, there is a demo account set up
 so that if you don't log in, you can still utilize the app and test out any of its functionality. 
