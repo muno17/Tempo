@@ -4,7 +4,6 @@
 ---
 ## About
 
-
 Tempo is a modular running log designed to break the standard 7-day week constraint. Create custom **Cycles** of any 
 duration—whether it's a 3-day recovery microcycle or a 15-day training stretch—Tempo adapts to your rhythm, not the 
 calendar.
