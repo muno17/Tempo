@@ -8,7 +8,7 @@
 Tempo is a modular running log designed to break the "standard 7-day week" constraint. Create custom **Cycles** of any 
 duration—whether it's a 3-day recovery microcycle or a 10-day training stretch—Tempo adapts to your rhythm, not the 
 calendar.
-
+![Dashboard](assets/images/img_1.png)
 ---
 ## Built With
 Django - Backend Framework
@@ -61,8 +61,8 @@ python manage.py runserver
 Data Hierarchy:
 ```
 Block (Macrocycle)
-└── Cycle (Microcycle - Custom Length)
-    └── Activity (The Run)
+└── Cycle (Microcycle)
+    └── Activity (A Run)
         └── Segments (Intervals/Splits)
 ```
 
