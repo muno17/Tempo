@@ -4,13 +4,6 @@
 {% block content %}
     <div class="stats-block">
         <div class="main-header">Cycle Details</div>
-        {% if cycle.block.id %}
-            <div class="button">
-                <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
-            </div>
-        {% else %}
-            <div class="default-message">No Block is currently associated with this Cycle, click Update to associate a Block</div>
-        {% endif %}
         <table>
             <thead>
                 <tr>
@@ -47,6 +40,13 @@
                 </tr>
             </tbody>
         </table>
+            {% if cycle.block.id %}
+            <div class="button">
+                <a href="{% url 'block-detail' cycle.block.id %}">Go to Block</a>
+            </div>
+        {% else %}
+            <div class="default-message">No Block is currently associated with this Cycle, click Update to associate a Block</div>
+        {% endif %}
         <hr>
         <div class="header-box">
             <div class="sub-header">Activities</div>
