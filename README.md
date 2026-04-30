@@ -75,7 +75,8 @@ Block (Macrocycle)
 ```
 
 
-1. **Flexible Access**: Sign up for a personal account or use the **Demo Account** (automatic if not logged in). *Note: The demo account is shared among all guest users.*
+1. **Flexible Access**: Sign up for a personal account or use the **Demo Account** (automatic if not logged in). 
+*Note: The demo account is shared among all guest users.*
 2. **Shoe Tracking**: (Optional) Track gear mileage. It is recommended to add your shoes before logging activities to ensure accurate gear stats.
 3. **Training Blocks**: Define high-level goals (e.g., "Spring Marathon Prep"). Blocks aggregate data from multiple cycles to show long-term progress.
 4. **Custom Cycles**: Define your 'Microcycle' - set any start and end date to suit your specific training needs.

@@ -26,10 +26,10 @@
             <div>Longest Activity Duration: {{ longest_duration }} </div>
         {% endif %}
     </div>
-    {% if latest_block %}
         <hr>
-        <a href="{% url 'block-detail' latest_block.id%}">
             <div class="main-header">Latest Block</div>
+            {% if latest_block %}
+            <a href="{% url 'block-detail' latest_block.id%}">
             <table>
                 <thead>
                     <tr>
@@ -68,11 +68,16 @@
                 </tbody>
             </table>
         </a>
+            {% else %}
+        <div class="default-message">No Blocks have been added yet</div>
+            <div class="button">
+                <a href="{% url 'block-create' %}">+ add Block</a>
+            </div>
     {% endif %}
-    {% if latest_cycle %}
         <hr>
-        <a href="{% url 'cycle-detail' latest_cycle.id%}">
         <div class="main-header">Latest Cycle</div>
+            {% if latest_cycle %}
+            <a href="{% url 'cycle-detail' latest_cycle.id%}">
             <table>
                 <thead>
                     <tr>
@@ -112,6 +117,7 @@
         </a>
         <hr>
         <div class="main-header">Latest Activities</div>
+                {% if latest_activities %}
             <table>
                 <thead>
                     <tr>
@@ -150,6 +156,17 @@
                     {% endfor %}
                 </tbody>
             </table>
+                    {% else %}
+                                <div class="default-message">No Activities have been added yet</div>
+            <div class="button">
+                <a href="{% url 'activity-create' %}">+ add Activity</a>
+            </div>
+                    {% endif %}
+            {% else %}
+            <div class="default-message">No Cycles have been added yet</div>
+            <div class="button">
+                <a href="{% url 'cycle-create' %}">+ add Cycle</a>
+            </div>
     {% endif %}
     </div>
 {% endblock %}
