@@ -58,6 +58,7 @@
         {% endif %}
         <hr>
         <div class="sub-header">Segment History</div>
+        {% if shoe.segments.all|length > 0 %}
         <table>
             <thead>
                 <tr>
@@ -80,5 +81,8 @@
             {% endfor %}
             </tbody>
         </table>
+    {% else %}
+            <div class="default-message">No Segments currently associated with this Shoe</div>
+    {% endif %}
     </div>
 {% endblock content %}

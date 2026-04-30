@@ -51,6 +51,7 @@
             </div>
         <hr>
         <div class="sub-header">Segments</div>
+        {% if activity.segments.all|length > 0 %}
         <table>
             <thead>
                 <tr>
@@ -86,5 +87,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <div class="default-message">No Segments currently associated with this Activity</div>
+    {% endif %}
     </div>
 {% endblock content %}
