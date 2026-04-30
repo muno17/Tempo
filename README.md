@@ -7,6 +7,8 @@ ___________
 Tempo is designed to be a modular running log that doesn't restrict you to the typical weekly
 structure.  You are able to create your own 'cycles', whether that means the usual 7-day cycle or
 anything greater or less than that, it's up to you to decide on a cycle by cycle basis.
+
+
 ---
 ## Built With
 Django - Backend Framework
@@ -47,22 +49,31 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 ```
 #### App Setup
+Installing Locally
+
+*Note: This app is optimized for deployment on Upsun. To run locally, you must provide a .env file for configuration.*
+
+
+1. Clone & Venv
 ```
-# Clone the repository
 git clone https://github.com/muno17/Tempo.git
 cd Tempo
-
-# Create and activate a virtual environment
 python -m venv .venv
 source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
+```
+2. Environment:
+ 
+Create a .env file based on .env.example and fill in your database details.
 
-# Run migrations and start the server
+
+
+3. Database
+```
 python manage.py migrate
 python manage.py runserver
 ```
+
 ---
 ## Usage
 
