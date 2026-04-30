@@ -1,5 +1,5 @@
 # Tempo
-<h3 style="margin-top: -25px;">Running Log and Planner</h3>
+### Running Log and Planner
 
 ---
 ## About
