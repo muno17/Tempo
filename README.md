@@ -5,9 +5,16 @@
 ## About
 
 
-Tempo is a modular running log designed to break the "standard 7-day week" constraint. Create custom **Cycles** of any 
-duration—whether it's a 3-day recovery microcycle or a 10-day training stretch—Tempo adapts to your rhythm, not the 
+Tempo is a modular running log designed to break the standard 7-day week constraint. Create custom **Cycles** of any 
+duration—whether it's a 3-day recovery microcycle or a 15-day training stretch—Tempo adapts to your rhythm, not the 
 calendar.
+
+Key Highlights:
+
+- **Custom Periodization**: Create training blocks and cycles with custom date ranges to fit your training needs.
+- **Granular Logging**: Breakdown complex workouts into segments (Warm-up, Intervals, Cool-down) for precise pace and performance tracking.
+- **Seamless Unit Toggling**: Switch between Imperial and Metric systems on the fly; all data is stored in miles to ensure consistency while offering a flexible UI.
+- **Live Dashboard**: Get an immediate overview of all-time statistics and quick-access views of your most recent training data.
 
 ![Dashboard](./assets/images/dashboard.png)
 ---
