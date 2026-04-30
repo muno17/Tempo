@@ -89,10 +89,7 @@ class Shoe(models.Model, StatsMixin):
         """Returns the total time spent running for the shoe"""
         shoe_time = self.segments.aggregate(
             total=models.Sum('duration')
-        )['total'] or 0
-
-        if not shoe_time:
-            return timedelta(0)
+        )['total'] or timedelta(0)
 
         return shoe_time + self.init_duration
 

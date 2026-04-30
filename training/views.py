@@ -48,6 +48,7 @@ class UserDataMixin:
 
 
 class UserAutoAssignMixin:
+    """Share logic tot update the form with the correct user when submitted"""
     def form_valid(self, form):
         form.instance.user = get_target_user(self.request)
         return super().form_valid(form)
