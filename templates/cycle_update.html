@@ -6,7 +6,12 @@
             {% csrf_token %}
             <div class="main-header">Cycle</div>
             {{ form.as_p }}
-            <button type="submit" class="save">Save</button>
+            <div class="form-buttons">
+                <button type="submit" class="save">Create</button>
+                <div class="button cancel">
+                    <a href="{% url 'cycle-list' %}">Cancel</a>
+                </div>
+            </div>
         </form>
     </div>
 {% endblock content %}

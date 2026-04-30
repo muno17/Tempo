@@ -6,7 +6,12 @@
             {% csrf_token %}
             <div class="main-header">Update Block</div>
             {{ form.as_p }}
-            <button type="submit" class="save">Save</button>
+            <div class="form-buttons">
+                <button type="submit" class="save">Create</button>
+                <div class="button cancel">
+                    <a href="{% url 'block-list' %}">Cancel</a>
+            </div>
+        </div>
         </form>
     </div>
 {% endblock content %}

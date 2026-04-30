@@ -11,7 +11,12 @@
                 </div>
             </div>
             {{ form.as_p }}
-            <button type="submit" class="save">Save</button>
+            <div class="form-buttons">
+                <button type="submit" class="save">Create</button>
+                <div class="button cancel">
+                    <a href="{% url 'shoe-list' %}">Cancel</a>
+                </div>
+            </div>
         </form>
     </div>
 

@@ -37,7 +37,12 @@
                         </tbody>
                     </table>
             </div>
-            <button type="submit" class="save">Save</button>
+            <div class="form-buttons">
+                <button type="submit" class="save">Create</button>
+                <div class="button cancel">
+                    <a href="{% url 'activity-list' %}">Cancel</a>
+                </div>
+            </div>
         </form>
     </div>
     <script src="{% static 'js/form_units.js' %}"></script>
