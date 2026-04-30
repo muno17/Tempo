@@ -178,7 +178,7 @@ class ActivityDetailView(UserDataMixin, DetailView):
 SegmentFormSet = inlineformset_factory(
     Activity, Segment,
     fields=('distance', 'duration', 'type', 'shoe'),
-    extra=7,  # How many empty rows to show by default
+    extra=10,  # How many empty rows to show by default
     can_delete=True,
     widgets={
         'duration': TextInput(attrs={
