@@ -47,6 +47,11 @@ class UserDataMixin:
         return super().get_queryset().filter(user=user)
 
 
+class UserAutoAssignMixin:
+    def form_valid(self, form):
+        form.instance.user = get_target_user(self.request)
+        return super().form_valid(form)
+
 class BlockFormMixin:
     """Share form logic for date fields"""
     def get_form(self):
@@ -70,17 +75,11 @@ class BlockDetailView(UserDataMixin, DetailView):
     context_object_name = 'current_block'
 
 
-class BlockCreateView(BlockFormMixin, CreateView):
+class BlockCreateView(UserAutoAssignMixin, BlockFormMixin, CreateView):
     model = Block
     fields = ['name', 'start', 'end', 'description', 'goals', 'notes']
     template_name = 'block_create.html'
     success_url = reverse_lazy('block-list')
-
-    def form_valid(self, form):
-        """Links the Block to the user"""
-        form.instance.user = get_target_user(self.request)
-        self.object = form.save()
-        return redirect(self.success_url)
 
 
 class BlockDeleteView(UserDataMixin, DeleteView):
@@ -133,7 +132,7 @@ class CycleFormMixin:
 
         return form
 
-class CycleCreateView(CycleFormMixin, CreateView):
+class CycleCreateView(UserAutoAssignMixin, CycleFormMixin, CreateView):
     model = Cycle
     fields = ['block', 'start', 'end']
     template_name = 'cycle_create.html'
@@ -152,12 +151,6 @@ class CycleCreateView(CycleFormMixin, CreateView):
             if latest_block:
                 initial['block'] = latest_block.id
         return initial
-
-    def form_valid(self, form):
-        """Links the Cycle to the segments and saves the activity and segments"""
-        form.instance.user = get_target_user(self.request)
-        self.object = form.save()
-        return redirect(self.success_url)
 
 
 class CycleUpdateView(UserDataMixin, CycleFormMixin, UpdateView):
@@ -344,16 +337,12 @@ class ShoeListView(UserDataMixin, ListView):
     ordering = ['-date_added']
 
 
-class ShoeCreateView(CreateView):
+class ShoeCreateView(UserAutoAssignMixin, CreateView):
     model = Shoe
     template_name = 'shoe_create.html'
     context_object_name = 'shoe'
     fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'init_duration', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
-
-    def form_valid(self, form):
-        form.instance.user = get_target_user(self.request)
-        return super().form_valid(form)
 
 
 class ShoeDetailView(UserDataMixin, DetailView):
@@ -365,7 +354,7 @@ class ShoeDetailView(UserDataMixin, DetailView):
 class ShoeUpdateView(UserDataMixin, UpdateView):
     model = Shoe
     template_name = 'shoe_update.html'
-    fields = ['brand', 'model_name', 'nickname', 'is_retired', 'notes']
+    fields = ['brand', 'model_name', 'nickname', 'init_mileage', 'init_duration', 'is_retired', 'notes']
     success_url = reverse_lazy('shoe-list')
 
 
